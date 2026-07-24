@@ -46,9 +46,15 @@ describe('calculateScore', () => {
 
 describe('formatTime', () => {
   it('formatea segundos correctamente', () => {
-    expect(formatTime(60)).toBe('60s')
+    expect(formatTime(30)).toBe('30s')
     expect(formatTime(0)).toBe('0s')
-    expect(formatTime(120)).toBe('120s')
+    expect(formatTime(59)).toBe('59s')
+  })
+  
+  it('formatea minutos y segundos correctamente', () => {
+    expect(formatTime(60)).toBe('1:00')
+    expect(formatTime(90)).toBe('1:30')
+    expect(formatTime(120)).toBe('2:00')
   })
 })
 
