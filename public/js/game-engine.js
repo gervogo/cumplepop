@@ -1,6 +1,6 @@
 // Game Engine for CumplePop - Potato Logic Only
 
-import { inflateBalloon, explodeBalloon, resetBalloon } from './balloon.js'
+import { startInflation, stopInflation, explodeBalloon, resetBalloon } from './balloon.js'
 import { showScreen, updateTimer, showExplosion } from './ui.js'
 import { getRandomDuration } from './utils.js'
 import { particleSystem } from './particles.js'
@@ -24,7 +24,6 @@ export class GameEngine {
     this.timer = 0
     this.totalTime = 0
     this.timerInterval = null
-    this.inflateInterval = null
   }
 
   async start() {
@@ -65,7 +64,9 @@ export class GameEngine {
   startGame() {
     this.state = STATES.PLAYING
     this.startTimer()
-    this.startInflation()
+    
+    // Start smooth inflation - balloon handles timing internally
+    startInflation(this.totalTime * 1000)
   }
 
   startTimer() {
@@ -85,16 +86,9 @@ export class GameEngine {
     }, 1000)
   }
 
-  startInflation() {
-    this.inflateInterval = setInterval(() => {
-      const progress = 1 - (this.timer / this.totalTime)
-      inflateBalloon(progress)
-    }, 100)
-  }
-
   explode() {
     clearInterval(this.timerInterval)
-    clearInterval(this.inflateInterval)
+    stopInflation()
     this.state = STATES.GAME_OVER
     
     const centerX = window.innerWidth / 2
@@ -111,7 +105,7 @@ export class GameEngine {
 
   reset() {
     clearInterval(this.timerInterval)
-    clearInterval(this.inflateInterval)
+    stopInflation()
     this.state = STATES.IDLE
     this.timer = 0
     particleSystem.clear()

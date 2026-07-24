@@ -1,20 +1,31 @@
-// Three.js Balloon module for CumplePop - Scale-based inflation
+// Three.js Balloon module for CumplePop - Smooth deltaTime-based inflation
 
 let scene, camera, renderer, balloon, balloonGroup
-let currentScale = 1
-let targetScale = 1
 let currentHue = 0.85
 let wobbleTime = 0
 let isExploding = false
 let animationFrameId = null
+let lastTime = 0
+
+// Continuous time tracking for smooth growth
+let inflationStartTime = 0
+let inflationDuration = 60000
+let isInflating = false
 
 const BALLOON_CONFIG = {
   initialColor: 0xFF1493,
   segments: 64,
   maxScale: 2.5,
-  wobbleSpeed: 2,
-  wobbleAmount: 0.02,
-  scaleSmoothing: 0.1
+  wobbleSpeed: 2
+}
+
+// Easing: slow start, fast end (like real balloon)
+function easeInQuad(t) {
+  return t * t
+}
+
+function easeInCubic(t) {
+  return t * t * t
 }
 
 export function initBalloon() {
@@ -117,21 +128,42 @@ export function initBalloon() {
   scene.add(rimLight)
 
   // Start animation loop
+  lastTime = performance.now()
   animate()
 }
 
 function animate() {
   animationFrameId = requestAnimationFrame(animate)
 
+  const now = performance.now()
+  const deltaTime = (now - lastTime) / 1000
+  lastTime = now
+
   if (!balloon || !balloonGroup) return
 
-  // Smooth scale interpolation
-  currentScale += (targetScale - currentScale) * BALLOON_CONFIG.scaleSmoothing
-  balloonGroup.scale.set(currentScale, currentScale, currentScale)
+  // Calculate continuous progress with easing
+  if (isInflating) {
+    const elapsed = now - inflationStartTime
+    const rawProgress = Math.min(elapsed / inflationDuration, 1)
+    const easedProgress = easeInCubic(rawProgress)
+    
+    // Smooth scale using deltaTime for frame-rate independence
+    const targetScale = 1 + easedProgress * (BALLOON_CONFIG.maxScale - 1)
+    balloonGroup.scale.set(targetScale, targetScale, targetScale)
 
-  // Wobble effect - increases with size
-  wobbleTime += 0.016
-  const wobbleIntensity = Math.min((currentScale - 1) * 0.5, 0.15)
+    // Color interpolation
+    currentHue = 0.85 - easedProgress * 0.4
+    if (balloon.material) {
+      balloon.material.color.setHSL(currentHue, 0.9, 0.5)
+    }
+
+    // Wobble increases with size
+    BALLOON_CONFIG.wobbleSpeed = 2 + easedProgress * 6
+  }
+
+  // Wobble effect
+  wobbleTime += deltaTime
+  const wobbleIntensity = Math.min((balloonGroup.scale.x - 1) * 0.3, 0.12)
   const wobbleX = Math.sin(wobbleTime * BALLOON_CONFIG.wobbleSpeed) * wobbleIntensity
   const wobbleZ = Math.cos(wobbleTime * BALLOON_CONFIG.wobbleSpeed * 0.7) * wobbleIntensity
   balloonGroup.rotation.x = wobbleX
@@ -140,14 +172,9 @@ function animate() {
   // Gentle rotation
   balloon.rotation.y += 0.003
 
-  // Color interpolation
-  if (balloon.material) {
-    balloon.material.color.setHSL(currentHue, 0.9, 0.5)
-  }
-
   // Vibration when close to exploding
-  if (currentScale > 2) {
-    const vibration = (currentScale - 2) * 0.05
+  if (balloonGroup.scale.x > 2) {
+    const vibration = (balloonGroup.scale.x - 2) * 0.04
     balloonGroup.position.x = (Math.random() - 0.5) * vibration
     balloonGroup.position.z = (Math.random() - 0.5) * vibration
   }
@@ -155,24 +182,22 @@ function animate() {
   renderer.render(scene, camera)
 }
 
-// Call this every 100ms from game engine
-export function inflateBalloon(progress) {
-  if (!balloon || isExploding) return
+// Start continuous inflation with duration
+export function startInflation(durationMs) {
+  inflationStartTime = performance.now()
+  inflationDuration = durationMs
+  isInflating = true
+}
 
-  // Set target scale based on progress (0 → 1)
-  targetScale = 1 + progress * (BALLOON_CONFIG.maxScale - 1)
-
-  // Color changes from pink to red
-  currentHue = 0.85 - progress * 0.4
-
-  // Wobble speed increases
-  BALLOON_CONFIG.wobbleSpeed = 2 + progress * 6
+export function stopInflation() {
+  isInflating = false
 }
 
 export function explodeBalloon() {
   if (!balloon || isExploding) return
 
   isExploding = true
+  isInflating = false
 
   // Create explosion particles
   createExplosionParticles()
@@ -276,8 +301,7 @@ function createExplosionParticles() {
 
 export function resetBalloon() {
   isExploding = false
-  currentScale = 1
-  targetScale = 1
+  isInflating = false
   currentHue = 0.85
   
   if (balloonGroup) {
@@ -294,8 +318,7 @@ export function resetBalloon() {
 export function getBalloonState() {
   return {
     exists: !!balloon,
-    scale: currentScale,
-    targetScale,
+    scale: balloonGroup ? balloonGroup.scale.x : 1,
     hue: currentHue,
     isExploding
   }
