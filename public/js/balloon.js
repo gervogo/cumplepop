@@ -1,18 +1,20 @@
-// Three.js Balloon module for CumplePop - Enhanced Version
+// Three.js Balloon module for CumplePop - Scale-based inflation
 
 let scene, camera, renderer, balloon, balloonGroup
+let currentScale = 1
 let targetScale = 1
 let currentHue = 0.85
 let wobbleTime = 0
 let isExploding = false
+let animationFrameId = null
 
 const BALLOON_CONFIG = {
   initialColor: 0xFF1493,
-  dangerColor: 0xFF0000,
   segments: 64,
-  maxScale: 2.2,
+  maxScale: 2.5,
   wobbleSpeed: 2,
-  wobbleAmount: 0.02
+  wobbleAmount: 0.02,
+  scaleSmoothing: 0.1
 }
 
 export function initBalloon() {
@@ -28,7 +30,7 @@ export function initBalloon() {
     1000
   )
   camera.position.z = 5
-  camera.position.y = 0.5
+  camera.position.y = 0.3
 
   renderer = new THREE.WebGLRenderer({ 
     canvas, 
@@ -39,14 +41,14 @@ export function initBalloon() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.setClearColor(0x000000, 0)
 
-  // Create balloon group for wobble effect
+  // Create balloon group
   balloonGroup = new THREE.Group()
   scene.add(balloonGroup)
 
   // Balloon body - elongated sphere
   const geometry = new THREE.SphereGeometry(1, BALLOON_CONFIG.segments, BALLOON_CONFIG.segments)
   
-  // Stretch the balloon vertically
+  // Stretch vertically
   const positions = geometry.attributes.position
   for (let i = 0; i < positions.count; i++) {
     const y = positions.getY(i)
@@ -62,14 +64,13 @@ export function initBalloon() {
     thickness: 0.5,
     clearcoat: 0.8,
     clearcoatRoughness: 0.1,
-    envMapIntensity: 1.0,
     side: THREE.DoubleSide
   })
 
   balloon = new THREE.Mesh(geometry, material)
   balloonGroup.add(balloon)
 
-  // Balloon knot at bottom
+  // Knot at bottom
   const knotGeometry = new THREE.ConeGeometry(0.08, 0.15, 16)
   const knotMaterial = new THREE.MeshPhysicalMaterial({
     color: BALLOON_CONFIG.initialColor,
@@ -95,10 +96,7 @@ export function initBalloon() {
   stringGeometry.setAttribute('position', 
     new THREE.Float32BufferAttribute(stringPoints, 3)
   )
-  const stringMaterial = new THREE.LineBasicMaterial({ 
-    color: 0xCCCCCC,
-    linewidth: 2
-  })
+  const stringMaterial = new THREE.LineBasicMaterial({ color: 0xCCCCCC })
   const string = new THREE.Line(stringGeometry, stringMaterial)
   balloonGroup.add(string)
 
@@ -123,52 +121,52 @@ export function initBalloon() {
 }
 
 function animate() {
-  requestAnimationFrame(animate)
+  animationFrameId = requestAnimationFrame(animate)
 
   if (!balloon || !balloonGroup) return
 
-  // Wobble effect
+  // Smooth scale interpolation
+  currentScale += (targetScale - currentScale) * BALLOON_CONFIG.scaleSmoothing
+  balloonGroup.scale.set(currentScale, currentScale, currentScale)
+
+  // Wobble effect - increases with size
   wobbleTime += 0.016
-  const wobbleX = Math.sin(wobbleTime * BALLOON_CONFIG.wobbleSpeed) * BALLOON_CONFIG.wobbleAmount
-  const wobbleZ = Math.cos(wobbleTime * BALLOON_CONFIG.wobbleSpeed * 0.7) * BALLOON_CONFIG.wobbleAmount
+  const wobbleIntensity = Math.min((currentScale - 1) * 0.5, 0.15)
+  const wobbleX = Math.sin(wobbleTime * BALLOON_CONFIG.wobbleSpeed) * wobbleIntensity
+  const wobbleZ = Math.cos(wobbleTime * BALLOON_CONFIG.wobbleSpeed * 0.7) * wobbleIntensity
   balloonGroup.rotation.x = wobbleX
   balloonGroup.rotation.z = wobbleZ
 
   // Gentle rotation
   balloon.rotation.y += 0.003
 
-  // Smooth scale interpolation
-  const currentScale = balloonGroup.scale.x
-  const newScale = currentScale + (targetScale - currentScale) * 0.05
-  balloonGroup.scale.set(newScale, newScale, newScale)
-
-  // Color interpolation based on hue
+  // Color interpolation
   if (balloon.material) {
     balloon.material.color.setHSL(currentHue, 0.9, 0.5)
+  }
+
+  // Vibration when close to exploding
+  if (currentScale > 2) {
+    const vibration = (currentScale - 2) * 0.05
+    balloonGroup.position.x = (Math.random() - 0.5) * vibration
+    balloonGroup.position.z = (Math.random() - 0.5) * vibration
   }
 
   renderer.render(scene, camera)
 }
 
+// Call this every 100ms from game engine
 export function inflateBalloon(progress) {
   if (!balloon || isExploding) return
 
-  // Scale increases with progress
+  // Set target scale based on progress (0 → 1)
   targetScale = 1 + progress * (BALLOON_CONFIG.maxScale - 1)
 
-  // Color changes from pink to red as danger increases
-  currentHue = 0.85 - progress * 0.35
+  // Color changes from pink to red
+  currentHue = 0.85 - progress * 0.4
 
-  // Increase wobble with danger
-  BALLOON_CONFIG.wobbleSpeed = 2 + progress * 4
-  BALLOON_CONFIG.wobbleAmount = 0.02 + progress * 0.03
-
-  // Add vibration effect when close to exploding
-  if (progress > 0.7) {
-    const vibration = (progress - 0.7) * 0.1
-    balloonGroup.position.x = (Math.random() - 0.5) * vibration
-    balloonGroup.position.z = (Math.random() - 0.5) * vibration
-  }
+  // Wobble speed increases
+  BALLOON_CONFIG.wobbleSpeed = 2 + progress * 6
 }
 
 export function explodeBalloon() {
@@ -187,7 +185,7 @@ export function explodeBalloon() {
     }, 100)
   }
 
-  // Remove balloon with animation
+  // Animate explosion
   const startScale = balloonGroup.scale.x
   const startTime = Date.now()
   const duration = 300
@@ -228,14 +226,12 @@ function createExplosionParticles() {
     })
     const particle = new THREE.Mesh(geometry, material)
 
-    // Start from balloon center
     particle.position.set(
       balloonGroup ? balloonGroup.position.x : 0,
       balloonGroup ? balloonGroup.position.y : 0,
       balloonGroup ? balloonGroup.position.z : 0
     )
 
-    // Random velocity
     particle.velocity = new THREE.Vector3(
       (Math.random() - 0.5) * 0.4,
       Math.random() * 0.3 + 0.1,
@@ -263,7 +259,7 @@ function createExplosionParticles() {
     if (progress < 1) {
       particles.forEach(particle => {
         particle.position.add(particle.velocity)
-        particle.velocity.y -= 0.008 // gravity
+        particle.velocity.y -= 0.008
         particle.rotation.x += particle.rotationSpeed.x
         particle.rotation.y += particle.rotationSpeed.y
         particle.material.opacity = 1 - progress
@@ -280,15 +276,16 @@ function createExplosionParticles() {
 
 export function resetBalloon() {
   isExploding = false
+  currentScale = 1
+  targetScale = 1
+  currentHue = 0.85
   
   if (balloonGroup) {
     scene.remove(balloonGroup)
   }
 
-  // Recreate balloon
   initBalloon()
   
-  // Reset scale
   if (balloonGroup) {
     balloonGroup.scale.set(1, 1, 1)
   }
@@ -297,7 +294,8 @@ export function resetBalloon() {
 export function getBalloonState() {
   return {
     exists: !!balloon,
-    scale: balloonGroup ? balloonGroup.scale.x : 0,
+    scale: currentScale,
+    targetScale,
     hue: currentHue,
     isExploding
   }

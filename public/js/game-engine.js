@@ -24,6 +24,7 @@ export class GameEngine {
     this.timer = 0
     this.totalTime = 0
     this.timerInterval = null
+    this.inflateInterval = null
   }
 
   async start() {
@@ -64,6 +65,7 @@ export class GameEngine {
   startGame() {
     this.state = STATES.PLAYING
     this.startTimer()
+    this.startInflation()
   }
 
   startTimer() {
@@ -73,10 +75,6 @@ export class GameEngine {
       this.timer--
       updateTimer(this.timer, this.totalTime)
       
-      const progress = 1 - (this.timer / this.totalTime)
-      inflateBalloon(progress)
-      
-      // Vibrate when danger zone
       if (this.timer <= 10 && navigator.vibrate) {
         navigator.vibrate([100, 50, 100])
       }
@@ -87,11 +85,18 @@ export class GameEngine {
     }, 1000)
   }
 
+  startInflation() {
+    this.inflateInterval = setInterval(() => {
+      const progress = 1 - (this.timer / this.totalTime)
+      inflateBalloon(progress)
+    }, 100)
+  }
+
   explode() {
     clearInterval(this.timerInterval)
+    clearInterval(this.inflateInterval)
     this.state = STATES.GAME_OVER
     
-    // Create explosion effects
     const centerX = window.innerWidth / 2
     const centerY = window.innerHeight / 2
     particleSystem.createExplosion(centerX, centerY, 80)
@@ -106,14 +111,10 @@ export class GameEngine {
 
   reset() {
     clearInterval(this.timerInterval)
+    clearInterval(this.inflateInterval)
     this.state = STATES.IDLE
     this.timer = 0
     particleSystem.clear()
-    
-    const countdownEl = document.getElementById('countdown')
-    if (countdownEl) {
-      countdownEl.style.display = 'flex'
-    }
     
     showScreen('splash-screen')
   }
