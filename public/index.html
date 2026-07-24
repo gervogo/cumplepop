@@ -159,6 +159,13 @@
       .ui-layer { display: none !important; }
     }
   </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "web-haptics": "https://esm.sh/web-haptics?bundle"
+    }
+  }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
 <body>
@@ -199,7 +206,8 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+import { WebHaptics } from 'web-haptics';
 (function() {
   // ======== STATE ========
   const MIN_TIME = 50;
@@ -235,6 +243,50 @@
   const resultText = document.getElementById('resultText');
   const startBtn = document.getElementById('startBtn');
   const restartBtn = document.getElementById('restartBtn');
+
+  // ======== HAPTICS ========
+  const haptics = new WebHaptics({ debug: false });
+  let hapticInterval = null;
+
+  function getHapticPattern(progress) {
+    if (progress < 0.5) {
+      const intensity = 0.1 + progress * 0.4;
+      return [{ duration: 20, intensity }];
+    } else if (progress < 0.8) {
+      const intensity = 0.3 + (progress - 0.5) * 1.5;
+      return [{ duration: 30, intensity }, { delay: 20, duration: 20, intensity: intensity * 0.6 }];
+    } else {
+      return [
+        { duration: 40, intensity: 0.9 },
+        { delay: 15, duration: 30, intensity: 1 },
+        { delay: 15, duration: 40, intensity: 0.8 }
+      ];
+    }
+  }
+
+  function startHapticLoop() {
+    if (hapticInterval) clearInterval(hapticInterval);
+    hapticInterval = setInterval(() => {
+      if (!gameStarted || isExploded) return;
+      const progress = 1 - (timeLeft / totalTime);
+      haptics.trigger(getHapticPattern(progress));
+    }, 500);
+  }
+
+  function stopHapticLoop() {
+    if (hapticInterval) { clearInterval(hapticInterval); hapticInterval = null; }
+  }
+
+  function triggerExplosionHaptic() {
+    haptics.trigger([
+      { duration: 80, intensity: 1 },
+      { delay: 30, duration: 60, intensity: 1 },
+      { delay: 20, duration: 40, intensity: 1 },
+      { delay: 15, duration: 30, intensity: 1 },
+      { delay: 10, duration: 20, intensity: 1 },
+      { delay: 10, duration: 15, intensity: 0.8 }
+    ]);
+  }
 
   // ======== THREE.JS SETUP ========
   const container = document.getElementById('canvas-container');
@@ -526,14 +578,17 @@
     physics.currentTiltZ = 0;
     physics.velX = 0;
     physics.velZ = 0;
+
+    startHapticLoop();
   }
 
   function explodeBalloon() {
     if (isExploded) return;
     isExploded = true;
     gameStarted = false;
+    stopHapticLoop();
 
-    if (isMobile && navigator.vibrate) navigator.vibrate(300);
+    triggerExplosionHaptic();
 
     document.getElementById('flash').classList.add('bang');
     setTimeout(() => document.getElementById('flash').classList.remove('bang'), 150);
@@ -553,6 +608,8 @@
     isExploded = false;
     gameStarted = false;
     timerAccum = 0;
+    stopHapticLoop();
+    haptics.cancel();
     balloon.visible = false;
     if (stringLine) stringLine.visible = true;
     fragGroup.visible = false;
