@@ -13,40 +13,13 @@
   height: 100%;
 }
 
-.balloon {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease;
-}
-
-.balloon.inflating {
-  animation: pulse 0.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.05); }
-}
-
-.balloon.danger {
-  animation: shake 0.1s ease-in-out infinite;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-  25% { transform: translate(-50%, -50%) rotate(-2deg); }
-  75% { transform: translate(-50%, -50%) rotate(2deg); }
-}
-
+/* Particle styles */
 .particle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
+  position: fixed;
   border-radius: 50%;
   pointer-events: none;
-  animation: particle-fly 1s ease-out forwards;
+  animation: particle-fly var(--duration, 1s) ease-out forwards;
+  z-index: 1000;
 }
 
 @keyframes particle-fly {
@@ -57,5 +30,27 @@
   100% {
     opacity: 0;
     transform: translate(var(--tx), var(--ty)) scale(0);
+  }
+}
+
+/* Balloon glow effect */
+.balloon-glow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 20, 147, 0.4) 0%, transparent 70%);
+  pointer-events: none;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
   }
 }
