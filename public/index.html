@@ -159,13 +159,6 @@
       .ui-layer { display: none !important; }
     }
   </style>
-  <script type="importmap">
-  {
-    "imports": {
-      "web-haptics": "https://esm.sh/web-haptics?bundle"
-    }
-  }
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
 <body>
@@ -188,7 +181,7 @@
   <!-- Splash Screen -->
   <div class="screen active" id="splash">
     <h2>🎈 CUMPLE POP</h2>
-    <p>Toca la pantalla para mover el globo. ¡No dejes que explote!</p>
+    <p>Inclina el celular para mover el globo. ¡No dejes que explote!</p>
     <button class="btn-action" id="startBtn">JUGAR</button>
   </div>
 
@@ -206,8 +199,7 @@
   </div>
 </div>
 
-<script type="module">
-import { WebHaptics } from 'web-haptics';
+<script>
 (function() {
   // ======== STATE ========
   const MIN_TIME = 50;
@@ -216,7 +208,7 @@ import { WebHaptics } from 'web-haptics';
   let timeLeft = totalTime;
   let isExploded = false;
   let gameStarted = false;
-  const isMobile = /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
 
   // Physics state
   const physics = {
@@ -244,23 +236,48 @@ import { WebHaptics } from 'web-haptics';
   const startBtn = document.getElementById('startBtn');
   const restartBtn = document.getElementById('restartBtn');
 
-  // ======== HAPTICS ========
-  const haptics = new WebHaptics({ debug: false });
+  // ======== HAPTICS (Vibration API + Audio fallback) ========
   let hapticInterval = null;
+  const hasVibrate = 'vibrate' in navigator;
 
-  function getHapticPattern(progress) {
+  let audioCtx = null;
+  function ensureAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function audioBuzz(durationMs) {
+    try {
+      ensureAudioCtx();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 120;
+      gain.gain.value = 0.15;
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + durationMs / 1000);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + durationMs / 1000);
+    } catch(e) {}
+  }
+
+  function vibrate(pattern) {
+    if (hasVibrate) {
+      navigator.vibrate(pattern);
+    }
+  }
+
+  function playTickHaptic(progress) {
     if (progress < 0.5) {
-      const intensity = 0.1 + progress * 0.4;
-      return [{ duration: 20, intensity }];
+      vibrate(15);
+      audioBuzz(15);
     } else if (progress < 0.8) {
-      const intensity = 0.3 + (progress - 0.5) * 1.5;
-      return [{ duration: 30, intensity }, { delay: 20, duration: 20, intensity: intensity * 0.6 }];
+      vibrate([20, 30, 15]);
+      audioBuzz(20);
     } else {
-      return [
-        { duration: 40, intensity: 0.9 },
-        { delay: 15, duration: 30, intensity: 1 },
-        { delay: 15, duration: 40, intensity: 0.8 }
-      ];
+      vibrate([30, 15, 25, 15, 20]);
+      audioBuzz(30);
     }
   }
 
@@ -269,7 +286,7 @@ import { WebHaptics } from 'web-haptics';
     hapticInterval = setInterval(() => {
       if (!gameStarted || isExploded) return;
       const progress = 1 - (timeLeft / totalTime);
-      haptics.trigger(getHapticPattern(progress));
+      playTickHaptic(progress);
     }, 500);
   }
 
@@ -278,14 +295,43 @@ import { WebHaptics } from 'web-haptics';
   }
 
   function triggerExplosionHaptic() {
-    haptics.trigger([
-      { duration: 80, intensity: 1 },
-      { delay: 30, duration: 60, intensity: 1 },
-      { delay: 20, duration: 40, intensity: 1 },
-      { delay: 15, duration: 30, intensity: 1 },
-      { delay: 10, duration: 20, intensity: 1 },
-      { delay: 10, duration: 15, intensity: 0.8 }
-    ]);
+    vibrate([80, 30, 60, 20, 50, 15, 40, 10, 30]);
+    audioBuzz(80);
+    setTimeout(() => audioBuzz(60), 100);
+    setTimeout(() => audioBuzz(40), 200);
+  }
+
+  // ======== GYROSCOPE ========
+  let gyroPermissionGranted = false;
+  let gyroEnabled = false;
+
+  async function requestGyroPermission() {
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        const result = await DeviceOrientationEvent.requestPermission();
+        if (result === 'granted') {
+          gyroPermissionGranted = true;
+          startGyroListener();
+        }
+      } catch(e) {}
+    } else {
+      gyroPermissionGranted = true;
+      startGyroListener();
+    }
+  }
+
+  function startGyroListener() {
+    window.addEventListener('deviceorientation', (e) => {
+      if (!gyroPermissionGranted || !gameStarted || isExploded) return;
+      gyroEnabled = true;
+      const gamma = e.gamma || 0;
+      const beta = e.beta || 0;
+      const normGamma = Math.max(-1, Math.min(1, gamma / 30));
+      const normBeta = Math.max(-1, Math.min(1, (beta - 45) / 30));
+      physics.targetTiltZ = normGamma * physics.maxTilt;
+      physics.targetTiltX = normBeta * physics.maxTilt * 0.5;
+    });
   }
 
   // ======== THREE.JS SETUP ========
@@ -367,28 +413,6 @@ import { WebHaptics } from 'web-haptics';
   knot.position.y = -1.25;
   knot.scale.set(1.3, 0.7, 1.3);
   balloon.add(knot);
-
-  // ======== STRING ========
-  let stringLine = null;
-  function updateString() {
-    if (stringLine) { balloon.remove(stringLine); stringLine.geometry.dispose(); }
-    const knotWorld = new THREE.Vector3(0, -1.3, 0).applyMatrix4(balloon.matrixWorld);
-    const points = [];
-    for (let i = 0; i <= 20; i++) {
-      const t = i / 20;
-      points.push(new THREE.Vector3(
-        knotWorld.x * (1 - t * 0.3) + Math.sin(t * 3 + Date.now() * 0.002) * 0.05 * t,
-        knotWorld.y - t * 2.5,
-        knotWorld.z * (1 - t * 0.3) + Math.cos(t * 2.5 + Date.now() * 0.0015) * 0.05 * t
-      ));
-    }
-    const curve = new THREE.CatmullRomCurve3(points);
-    stringLine = new THREE.Mesh(
-      new THREE.TubeGeometry(curve, 32, 0.012, 8, false),
-      new THREE.MeshPhysicalMaterial({ color: 0xDDDDDD, roughness: 0.4, metalness: 0.1, clearcoat: 0.3 })
-    );
-    scene.add(stringLine);
-  }
 
   // ======== ENVIRONMENT MAP ========
   const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -494,16 +518,14 @@ import { WebHaptics } from 'web-haptics';
     if (alive === 0) fragGroup.visible = false;
   }
 
-  // ======== INPUT ========
+  // ======== INPUT (mouse fallback for desktop) ========
   document.addEventListener('mousemove', (e) => {
-    if (!gameStarted || isExploded) return;
+    if (!gameStarted || isExploded || gyroEnabled) return;
     const nx = (e.clientX / window.innerWidth) * 2 - 1;
     const ny = -(e.clientY / window.innerHeight) * 2 + 1;
     physics.targetTiltZ = nx * physics.maxTilt;
     physics.targetTiltX = ny * physics.maxTilt * 0.5;
   });
-
-
 
   // ======== INFLATION ========
   function getInflationScale() {
@@ -539,6 +561,7 @@ import { WebHaptics } from 'web-haptics';
   function startCountdown() {
     splash.classList.remove('active');
     countdownEl.classList.add('active');
+    requestGyroPermission();
     let count = 3;
     countNum.textContent = count;
     const interval = setInterval(() => {
@@ -594,7 +617,6 @@ import { WebHaptics } from 'web-haptics';
     setTimeout(() => document.getElementById('flash').classList.remove('bang'), 150);
 
     balloon.visible = false;
-    if (stringLine) stringLine.visible = false;
 
     explodeFragments(balloon.position.clone());
 
@@ -609,9 +631,8 @@ import { WebHaptics } from 'web-haptics';
     gameStarted = false;
     timerAccum = 0;
     stopHapticLoop();
-    haptics.cancel();
+    vibrate(0);
     balloon.visible = false;
-    if (stringLine) stringLine.visible = true;
     fragGroup.visible = false;
     for (const f of fragments) f.mesh.visible = false;
     physics.currentTiltX = physics.currentTiltZ = physics.velX = physics.velZ = 0;
@@ -665,8 +686,6 @@ import { WebHaptics } from 'web-haptics';
         balloon.rotation.x += Math.sin(now * 0.02) * wobble * 0.08;
         balloon.rotation.z += Math.cos(now * 0.015) * wobble * 0.08;
       }
-
-      updateString();
     }
 
     updateFragments(dt);
