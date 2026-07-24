@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>CumplePop 🎈</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/balloon.css">
+  <link rel="stylesheet" href="/css/game.css">
+  <link rel="stylesheet" href="/css/screens.css">
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="screen active">
+    <div class="sticker sticker-flower">🌸</div>
+    <div class="sticker sticker-heart">💖</div>
+    <h1 class="game-title">CumplePop</h1>
+    <p class="subtitle">¡La patata más caliente!</p>
+    <button id="btn-start" class="btn-primary">JUGAR</button>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <div id="timer-container">
+      <div id="timer-fill"></div>
+      <span id="timer-text">60s</span>
+    </div>
+
+    <canvas id="balloon-canvas"></canvas>
+
+    <div id="question-container" class="hidden">
+      <div class="card-question">
+        <p id="question-text"></p>
+        <div id="options-grid"></div>
+      </div>
+      <button id="btn-validate" class="btn-primary" disabled>VALIDAR</button>
+    </div>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result-screen" class="screen">
+    <div class="sticker sticker-confetti">🎉</div>
+    <h2 id="result-title"></h2>
+    <p id="result-score"></p>
+    <button id="btn-restart" class="btn-primary">JUGAR DE NUEVO</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/questions.js"></script>
+  <script src="/js/balloon.js"></script>
+  <script src="/js/particles.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/game-engine.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

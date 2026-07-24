@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Build
+dist/
+build/
+*.tgz
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+test-results/
+playwright-report/
+coverage/
+
+# Logs
+*.log
+
+# HyperFrames output
+public/assets/video/*.mp4
+public/assets/video/*.webm
+
+# Temporary
+tmp/
+temp/

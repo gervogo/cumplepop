@@ -1,0 +1,61 @@
+#balloon-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.balloon-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.balloon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+}
+
+.balloon.inflating {
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+
+.balloon.danger {
+  animation: shake 0.1s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) rotate(-2deg); }
+  75% { transform: translate(-50%, -50%) rotate(2deg); }
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-fly 1s ease-out forwards;
+}
+
+@keyframes particle-fly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0);
+  }
+}

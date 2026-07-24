@@ -1,0 +1,65 @@
+.game-title {
+  font-size: 4rem;
+  font-weight: bold;
+  text-shadow: 
+    0 0 10px var(--color-neon-pink),
+    0 0 20px var(--color-neon-pink),
+    0 0 30px var(--color-neon-pink);
+  margin-bottom: 10px;
+  z-index: 10;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--color-pastel-pink);
+  margin-bottom: 30px;
+  z-index: 10;
+}
+
+.sticker {
+  position: absolute;
+  font-size: 3rem;
+  z-index: 5;
+  animation: float 3s ease-in-out infinite;
+}
+
+.sticker-flower {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.sticker-heart {
+  top: 30%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.sticker-confetti {
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5rem;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(10deg); }
+}
+
+#result-screen {
+  text-align: center;
+}
+
+#result-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  z-index: 10;
+}
+
+#result-score {
+  font-size: 2rem;
+  color: var(--color-neon-yellow);
+  margin-bottom: 30px;
+  z-index: 10;
+}

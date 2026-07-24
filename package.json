@@ -1,0 +1,35 @@
+{
+  "name": "cumplepop",
+  "version": "0.1.0",
+  "description": "Juego de trivia de cumpleaños con estética Superpop",
+  "type": "module",
+  "scripts": {
+    "dev": "node server/index.js",
+    "start": "node server/index.js",
+    "build": "echo 'No build needed yet'",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:smoke": "playwright test",
+    "test:smoke:ui": "playwright test --ui",
+    "test:all": "npm run test:unit && npm run test:smoke",
+    "test:coverage": "vitest run --coverage",
+    "convert-questions": "node scripts/convert-questions.js"
+  },
+  "keywords": [
+    "trivia",
+    "birthday",
+    "game",
+    "three.js",
+    "websocket"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.0",
+    "vitest": "^1.2.0"
+  }
+}
