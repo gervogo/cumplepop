@@ -16,6 +16,13 @@
 <body>
   <!-- Splash Screen -->
   <div id="splash-screen" class="screen active">
+    <!-- Washi Tape Decorations -->
+    <div class="washi-tape washi-tape-top-left"></div>
+    <div class="washi-tape washi-tape-top-right"></div>
+    <div class="washi-tape washi-tape-bottom-left"></div>
+    <div class="washi-tape washi-tape-bottom-right"></div>
+    
+    <!-- Stickers -->
     <div class="sticker sticker-flower">🌸</div>
     <div class="sticker sticker-heart">💖</div>
     <div class="sticker sticker-star">⭐</div>
@@ -45,12 +52,6 @@
 
   <!-- Game Screen -->
   <div id="game-screen" class="screen">
-    <!-- Timer - BIG AND VISIBLE -->
-    <div id="timer-container">
-      <div id="timer-fill"></div>
-      <span id="timer-text">60s</span>
-    </div>
-    
     <!-- Countdown overlay -->
     <div id="countdown" class="countdown-overlay">3</div>
     
@@ -60,14 +61,21 @@
 
   <!-- Result Screen -->
   <div id="result-screen" class="screen">
+    <!-- Washi Tape -->
+    <div class="washi-tape washi-tape-top-left"></div>
+    <div class="washi-tape washi-tape-top-right"></div>
+    
+    <!-- Stickers -->
     <div class="sticker sticker-confetti">🎉</div>
     <div class="sticker sticker-confetti-2">🎊</div>
+    <div class="sticker" style="bottom: 20%; left: 10%; animation-delay: 0.3s;">🌸</div>
+    <div class="sticker" style="bottom: 15%; right: 8%; animation-delay: 0.8s;">💖</div>
     
     <div class="result-content">
       <h2 id="result-title">¡BOOM! 💥</h2>
       <p id="result-subtitle">La patata ha explotado...</p>
       
-      <button id="btn-restart" class="btn-primary btn-large">
+      <button id="btn-restart" class="btn-primary btn-large btn-restart">
         <span class="btn-icon">🔄</span>
         JUGAR DE NUEVO
       </button>

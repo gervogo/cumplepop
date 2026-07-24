@@ -1,21 +1,22 @@
 :root {
-  /* Colors - Superpop Theme */
+  /* Colors - Superpop Scrapbook Palette */
+  --pink-primary: #E91E63;
+  --pink-light: #FF80AB;
+  --pink-pale: #FFF0F5;
+  --lilac: #F0E6FF;
+  --cream: #FFFACD;
+  --purple-accent: #8E24AA;
+  --yellow-accent: #FF8F00;
+  --danger: #C62828;
+  --success: #2E7D32;
+  --text-primary: #4A4A4A;
+  --text-secondary: #888888;
+  
+  /* Neón accents */
   --color-neon-pink: #FF1493;
   --color-neon-blue: #00BFFF;
   --color-neon-green: #00FF7F;
   --color-neon-yellow: #FFD700;
-  --color-neon-orange: #FF6347;
-  --color-neon-purple: #9370DB;
-  
-  --color-pastel-pink: #FFB6C1;
-  --color-pastel-blue: #87CEEB;
-  --color-pastel-green: #98FB98;
-  --color-pastel-yellow: #FFFACD;
-  
-  --color-bg-dark: #1a1a2e;
-  --color-bg-darker: #0f0f1a;
-  --color-bg-card: rgba(255, 255, 255, 0.08);
-  --color-bg-card-hover: rgba(255, 255, 255, 0.12);
   
   /* Typography */
   --font-primary: 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -35,13 +36,11 @@
   --radius-xl: 30px;
   --radius-full: 50%;
   
-  /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-glow-pink: 0 0 20px rgba(255, 20, 147, 0.5);
-  --shadow-glow-blue: 0 0 20px rgba(0, 191, 255, 0.5);
-  --shadow-glow-green: 0 0 20px rgba(0, 255, 127, 0.5);
+  /* Shadows - Softer for scrapbook */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-glow-pink: 0 0 20px rgba(233, 30, 99, 0.4);
   
   /* Transitions */
   --transition-fast: 0.15s ease;
@@ -63,8 +62,8 @@ html, body {
 
 body {
   font-family: var(--font-primary);
-  background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-darker) 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--pink-pale) 0%, var(--lilac) 50%, var(--cream) 100%);
+  color: var(--text-primary);
   min-height: 100vh;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
@@ -85,10 +84,10 @@ body {
   justify-content: center;
 }
 
-/* Buttons */
+/* Buttons - Scrapbook style */
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-neon-pink) 0%, var(--color-neon-blue) 100%);
-  border: none;
+  background: linear-gradient(135deg, var(--pink-primary) 0%, var(--purple-accent) 100%);
+  border: 3px dashed rgba(255, 255, 255, 0.5);
   border-radius: var(--radius-xl);
   padding: var(--spacing-md) var(--spacing-xl);
   font-size: 1.25rem;
@@ -104,11 +103,27 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-sm);
+  position: relative;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--radius-xl);
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 5px,
+    rgba(255, 255, 255, 0.1) 5px,
+    rgba(255, 255, 255, 0.1) 10px
+  );
+  z-index: -1;
 }
 
 .btn-primary:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 0 30px rgba(255, 20, 147, 0.7);
+  box-shadow: 0 0 30px rgba(233, 30, 99, 0.6);
 }
 
 .btn-primary:active {
@@ -146,35 +161,12 @@ body {
   50% { transform: scale(1.1); }
 }
 
-/* Confetti */
-.confetti {
-  position: fixed;
-  top: -20px;
-  width: 10px;
-  height: 10px;
-  background-color: currentColor;
-  animation: confetti-fall linear forwards;
-  z-index: 1000;
-  pointer-events: none;
-}
-
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-
 /* Score popup */
 .score-popup {
   position: fixed;
   font-size: 1.5rem;
   font-weight: bold;
-  text-shadow: 0 0 10px currentColor;
+  color: var(--pink-primary);
   pointer-events: none;
   animation: score-float 1.5s ease-out forwards;
   z-index: 1001;
@@ -187,25 +179,6 @@ body {
   }
   100% {
     transform: translateY(-80px) scale(1.5);
-    opacity: 0;
-  }
-}
-
-/* Sticker particles */
-.sticker-particle {
-  position: fixed;
-  pointer-events: none;
-  animation: sticker-fly 1.2s ease-out forwards;
-  z-index: 1000;
-}
-
-@keyframes sticker-fly {
-  0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx), var(--ty)) scale(0.5) rotate(360deg);
     opacity: 0;
   }
 }
