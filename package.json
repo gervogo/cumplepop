@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
+    "web-haptics": "^0.0.6",
     "ws": "^8.16.0"
   },
   "devDependencies": {
