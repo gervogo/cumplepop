@@ -236,9 +236,22 @@
   const startBtn = document.getElementById('startBtn');
   const restartBtn = document.getElementById('restartBtn');
 
-  // ======== HAPTICS (Vibration API + Audio fallback) ========
+  // ======== HAPTICS (iOS switch hack + Vibration API + Audio) ========
   let hapticInterval = null;
   const hasVibrate = 'vibrate' in navigator;
+
+  // iOS Safari: hidden <input switch> toggles Taptic Engine
+  const hapticId = 'hap-' + Math.random().toString(36).slice(2, 8);
+  const hapticLabel = document.createElement('label');
+  hapticLabel.setAttribute('for', hapticId);
+  hapticLabel.style.cssText = 'position:fixed;top:-9999px;left:-9999px;pointer-events:none;';
+  const hapticInput = document.createElement('input');
+  hapticInput.type = 'checkbox';
+  hapticInput.setAttribute('switch', '');
+  hapticInput.id = hapticId;
+  hapticInput.style.cssText = 'position:fixed;top:-9999px;left:-9999px;pointer-events:none;';
+  hapticLabel.appendChild(hapticInput);
+  document.body.appendChild(hapticLabel);
 
   let audioCtx = null;
   function ensureAudioCtx() {
@@ -246,38 +259,51 @@
     if (audioCtx.state === 'suspended') audioCtx.resume();
   }
 
-  function audioBuzz(durationMs) {
+  function audioClick(vol) {
     try {
       ensureAudioCtx();
-      const osc = audioCtx.createOscillator();
+      const buf = audioCtx.createBuffer(1, 64, audioCtx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / 25);
+      const src = audioCtx.createBufferSource();
       const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = 120;
-      gain.gain.value = 0.15;
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + durationMs / 1000);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + durationMs / 1000);
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 2000 + vol * 2000;
+      gain.gain.value = 0.4 * vol;
+      src.buffer = buf;
+      src.connect(gain);
+      gain.connect(filter);
+      filter.connect(audioCtx.destination);
+      src.start();
     } catch(e) {}
   }
 
-  function vibrate(pattern) {
-    if (hasVibrate) {
-      navigator.vibrate(pattern);
-    }
+  function hapticTick() {
+    if (hasVibrate) navigator.vibrate(12);
+    try { hapticInput.click(); } catch(e) {}
+    audioClick(0.3);
+  }
+
+  function hapticPulse() {
+    if (hasVibrate) navigator.vibrate([25, 10, 20]);
+    try { hapticInput.click(); } catch(e) {}
+    audioClick(0.6);
+  }
+
+  function hapticStrong() {
+    if (hasVibrate) navigator.vibrate([40, 10, 30, 10, 25]);
+    try { hapticInput.click(); } catch(e) {}
+    audioClick(0.8);
   }
 
   function playTickHaptic(progress) {
     if (progress < 0.5) {
-      vibrate(15);
-      audioBuzz(15);
+      hapticTick();
     } else if (progress < 0.8) {
-      vibrate([20, 30, 15]);
-      audioBuzz(20);
+      hapticPulse();
     } else {
-      vibrate([30, 15, 25, 15, 20]);
-      audioBuzz(30);
+      hapticStrong();
     }
   }
 
@@ -295,10 +321,16 @@
   }
 
   function triggerExplosionHaptic() {
-    vibrate([80, 30, 60, 20, 50, 15, 40, 10, 30]);
-    audioBuzz(80);
-    setTimeout(() => audioBuzz(60), 100);
-    setTimeout(() => audioBuzz(40), 200);
+    if (hasVibrate) navigator.vibrate([80, 20, 60, 15, 50, 10, 40]);
+    try {
+      hapticInput.click();
+      setTimeout(() => hapticInput.click(), 80);
+      setTimeout(() => hapticInput.click(), 160);
+      setTimeout(() => hapticInput.click(), 240);
+    } catch(e) {}
+    audioClick(1.0);
+    setTimeout(() => audioClick(0.8), 80);
+    setTimeout(() => audioClick(0.6), 160);
   }
 
   // ======== GYROSCOPE ========
@@ -631,7 +663,7 @@
     gameStarted = false;
     timerAccum = 0;
     stopHapticLoop();
-    vibrate(0);
+    if (hasVibrate) navigator.vibrate(0);
     balloon.visible = false;
     fragGroup.visible = false;
     for (const f of fragments) f.mesh.visible = false;
