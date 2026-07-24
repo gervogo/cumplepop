@@ -26,8 +26,8 @@
       <p class="subtitle">¡La patata más caliente!</p>
       
       <div class="splash-instructions">
-        <p>Responde preguntas antes de que explote la patata 🥔</p>
-        <p class="hint"> Usa las teclas 1-4 o haz clic para responder</p>
+        <p>¡Sostén la patata antes de que explote! 🥔</p>
+        <p class="hint">No la sueltes...</p>
       </div>
       
       <button id="btn-start" class="btn-primary btn-large">
@@ -45,21 +45,7 @@
 
   <!-- Game Screen -->
   <div id="game-screen" class="screen">
-    <!-- Header -->
-    <div id="game-header">
-      <div id="score-container">
-        <span class="label">Puntos</span>
-        <span id="score-display">0</span>
-      </div>
-      
-      <div id="question-progress">1 / 10</div>
-      
-      <div id="streak-container">
-        <span id="streak-display"></span>
-      </div>
-    </div>
-    
-    <!-- Timer -->
+    <!-- Timer - BIG AND VISIBLE -->
     <div id="timer-container">
       <div id="timer-fill"></div>
       <span id="timer-text">60s</span>
@@ -68,22 +54,8 @@
     <!-- Countdown overlay -->
     <div id="countdown" class="countdown-overlay">3</div>
     
-    <!-- 3D Canvas -->
+    <!-- 3D Canvas - The Potato/Balloon -->
     <canvas id="balloon-canvas"></canvas>
-    
-    <!-- Answer feedback -->
-    <div id="answer-feedback" class="answer-feedback"></div>
-    
-    <!-- Question container -->
-    <div id="question-container" class="hidden">
-      <div class="card-question">
-        <p id="question-text"></p>
-        <div id="options-grid"></div>
-      </div>
-      <button id="btn-validate" class="btn-primary" disabled>
-        VALIDAR
-      </button>
-    </div>
   </div>
 
   <!-- Result Screen -->
@@ -92,11 +64,8 @@
     <div class="sticker sticker-confetti-2">🎊</div>
     
     <div class="result-content">
-      <h2 id="result-title"></h2>
-      <p id="result-subtitle"></p>
-      <p id="result-score" class="final-score"></p>
-      
-      <div id="game-stats" class="stats-container"></div>
+      <h2 id="result-title">¡BOOM! 💥</h2>
+      <p id="result-subtitle">La patata ha explotado...</p>
       
       <button id="btn-restart" class="btn-primary btn-large">
         <span class="btn-icon">🔄</span>
