@@ -1,18 +1,36 @@
-/* Game Screen - Scrapbook Style */
+/* CumplePop - Game Screen (Reference: cumple_pop_globo_demo.html) */
 
-/* Countdown */
+/* Game screen */
+#game-screen {
+  background: linear-gradient(160deg, #FFF0F5 0%, #F3E5F5 40%, #FFF8E1 100%);
+}
+
+/* Canvas container */
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#balloon-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Countdown overlay */
 .countdown-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 10rem;
+  font-size: 8rem;
   font-weight: 700;
-  color: var(--pink-primary);
+  color: #E91E63;
   text-shadow: 
-    4px 4px 0 var(--purple-accent),
-    0 0 40px rgba(233, 30, 99, 0.5);
-  z-index: 200;
+    4px 4px 0 #F8BBD0,
+    0 0 40px rgba(233, 30, 99, 0.4);
+  z-index: 50;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -26,11 +44,11 @@
 
 @keyframes countdown-pop {
   0% {
-    transform: translate(-50%, -50%) scale(0.3) rotate(-20deg);
+    transform: translate(-50%, -50%) scale(0.3) rotate(-15deg);
     opacity: 0;
   }
-  50% {
-    transform: translate(-50%, -50%) scale(1.3) rotate(10deg);
+  60% {
+    transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
     opacity: 1;
   }
   100% {
@@ -39,19 +57,19 @@
   }
 }
 
-/* Canvas container */
-#balloon-canvas {
+/* Flash effect on explosion */
+.flash {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+  inset: 0;
+  background: #FFF;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+  transition: opacity 0.1s;
 }
 
-/* Game screen background */
-#game-screen {
-  background: linear-gradient(180deg, var(--pink-pale) 0%, var(--cream) 100%);
+.flash.bang {
+  opacity: 0.6;
 }
 
 /* Hide elements in potato mode */

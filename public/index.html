@@ -3,79 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>CumplePop 🎈</title>
+  <title>🎈 CumplePop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/balloon.css">
-  <link rel="stylesheet" href="/css/game.css">
   <link rel="stylesheet" href="/css/screens.css">
+  <link rel="stylesheet" href="/css/game.css">
   <link rel="stylesheet" href="/css/animations.css">
 </head>
 <body>
-  <!-- Splash Screen -->
+  <!-- ============================================
+       SPLASH SCREEN
+       ============================================ -->
   <div id="splash-screen" class="screen active">
-    <!-- Washi Tape Decorations -->
-    <div class="washi-tape washi-tape-top-left"></div>
-    <div class="washi-tape washi-tape-top-right"></div>
-    <div class="washi-tape washi-tape-bottom-left"></div>
-    <div class="washi-tape washi-tape-bottom-right"></div>
-    
-    <!-- Stickers -->
-    <div class="sticker sticker-flower">🌸</div>
-    <div class="sticker sticker-heart">💖</div>
-    <div class="sticker sticker-star">⭐</div>
-    <div class="sticker sticker-balloon">🎈</div>
-    
+    <!-- Washi tape decorations -->
+    <div class="washi-tape wt1"></div>
+    <div class="washi-tape wt2"></div>
+    <div class="washi-tape wt3"></div>
+    <div class="washi-tape wt4"></div>
+
+    <!-- Flower decorations -->
+    <div class="deco deco-flower f1">🌸</div>
+    <div class="deco deco-flower f2">🌼</div>
+    <div class="deco deco-flower f3">🌷</div>
+    <div class="deco deco-flower f4">🌺</div>
+    <div class="deco deco-flower f5">💐</div>
+    <div class="deco deco-flower f6">🌻</div>
+
     <div class="splash-content">
-      <h1 class="game-title">CumplePop</h1>
-      <p class="subtitle">¡La patata más caliente!</p>
-      
-      <div class="splash-instructions">
-        <p>¡Sostén la patata antes de que explote! 🥔</p>
-        <p class="hint">No la sueltes...</p>
+      <div class="title-box">
+        <h1>🎈 CUMPLE POP</h1>
+        <p>¡La patata más caliente!</p>
       </div>
-      
+
+      <p class="subtitle">¡Sostén la patata antes de que explote! 🥔</p>
+
+      <div class="splash-instructions">
+        <p>No la sueltes...</p>
+        <p class="hint">El globo crecerá hasta explotar</p>
+      </div>
+
       <button id="btn-start" class="btn-primary btn-large">
         <span class="btn-icon">🎮</span>
         JUGAR
       </button>
     </div>
-    
-    <div class="splash-decoration">
-      <div class="deco-circle"></div>
-      <div class="deco-circle"></div>
-      <div class="deco-circle"></div>
+  </div>
+
+  <!-- ============================================
+       GAME SCREEN
+       ============================================ -->
+  <div id="game-screen" class="screen">
+    <div class="canvas-container">
+      <!-- Washi tape decorations -->
+      <div class="washi-tape wt1"></div>
+      <div class="washi-tape wt2"></div>
+      <div class="washi-tape wt3"></div>
+      <div class="washi-tape wt4"></div>
+
+      <!-- Flower decorations -->
+      <div class="deco deco-flower f1">🌸</div>
+      <div class="deco deco-flower f2">🌼</div>
+      <div class="deco deco-flower f3">🌷</div>
+      <div class="deco deco-flower f4">🌺</div>
+
+      <!-- Flash effect -->
+      <div class="flash" id="flash"></div>
+
+      <!-- Countdown overlay -->
+      <div id="countdown" class="countdown-overlay">3</div>
+
+      <!-- 3D Canvas -->
+      <canvas id="balloon-canvas"></canvas>
     </div>
   </div>
 
-  <!-- Game Screen -->
-  <div id="game-screen" class="screen">
-    <!-- Countdown overlay -->
-    <div id="countdown" class="countdown-overlay">3</div>
-    
-    <!-- 3D Canvas - The Potato/Balloon -->
-    <canvas id="balloon-canvas"></canvas>
-  </div>
-
-  <!-- Result Screen -->
+  <!-- ============================================
+       RESULT SCREEN
+       ============================================ -->
   <div id="result-screen" class="screen">
-    <!-- Washi Tape -->
-    <div class="washi-tape washi-tape-top-left"></div>
-    <div class="washi-tape washi-tape-top-right"></div>
-    
+    <!-- Washi tape decorations -->
+    <div class="washi-tape wt1"></div>
+    <div class="washi-tape wt2"></div>
+
     <!-- Stickers -->
     <div class="sticker sticker-confetti">🎉</div>
     <div class="sticker sticker-confetti-2">🎊</div>
-    <div class="sticker" style="bottom: 20%; left: 10%; animation-delay: 0.3s;">🌸</div>
-    <div class="sticker" style="bottom: 15%; right: 8%; animation-delay: 0.8s;">💖</div>
-    
+    <div class="deco deco-flower f3">🌸</div>
+    <div class="deco deco-flower f4">💖</div>
+
     <div class="result-content">
       <h2 id="result-title">¡BOOM! 💥</h2>
       <p id="result-subtitle">La patata ha explotado...</p>
-      
-      <button id="btn-restart" class="btn-primary btn-large btn-restart">
+
+      <button id="btn-restart" class="btn-primary btn-large">
         <span class="btn-icon">🔄</span>
         JUGAR DE NUEVO
       </button>
