@@ -26,15 +26,8 @@
       }
 
       .logo {
-        width: clamp(200px, 30vw, 500px);
+        width: min(90vw, 90vh);
         height: auto;
-        filter: drop-shadow(4px 4px 0px var(--black));
-        animation: float 3s ease-in-out infinite;
-      }
-
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-12px); }
       }
     </style>
   </head>
