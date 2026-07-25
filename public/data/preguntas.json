@@ -1,0 +1,1282 @@
+[
+  {
+    "id": 1,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué año se estrenó 'Aquí no hay quien viva'?",
+    "respuesta": 2003,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 2,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué año se estrenó 'Los Serrano'?",
+    "respuesta": 2003,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 3,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué año comenzó la primera edición de 'Operación Triunfo'?",
+    "respuesta": 2001,
+    "tipo": "año",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 4,
+    "categoria": "Televisión española",
+    "pregunta": "¿Cuántos concursantes entraron en la Academia en la primera edición de 'Operación Triunfo'?",
+    "respuesta": 16,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 5,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué puesto terminó Rosa López en Eurovisión 2002 representando a España?",
+    "respuesta": 7,
+    "tipo": "puesto",
+    "dificultad": "alta"
+  },
+  {
+    "id": 6,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué año se estrenó 'Física o Química'?",
+    "respuesta": 2008,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 7,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué año se estrenó 'El Internado'?",
+    "respuesta": 2007,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 8,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué año se estrenó 'La que se avecina'?",
+    "respuesta": 2007,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 9,
+    "categoria": "Televisión española",
+    "pregunta": "¿Cuántas pruebas componían la fase final de 'El Grand Prix del Verano' en su formato clásico?",
+    "respuesta": 4,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 10,
+    "categoria": "Televisión española",
+    "pregunta": "¿En qué año se estrenó 'Camera Café'?",
+    "respuesta": 2005,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 11,
+    "categoria": "Cine",
+    "pregunta": "¿En qué año se estrenó la primera película de 'Harry Potter'?",
+    "respuesta": 2001,
+    "tipo": "año",
+    "dificultad": "facil"
+  },
+  {
+    "id": 12,
+    "categoria": "Cine",
+    "pregunta": "¿Cuántas películas componen la saga principal de 'Harry Potter'?",
+    "respuesta": 8,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 13,
+    "categoria": "Cine",
+    "pregunta": "¿Cuántos Horrocruxes creó Lord Voldemort?",
+    "respuesta": 7,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 14,
+    "categoria": "Cine",
+    "pregunta": "¿En qué año se estrenó 'Shrek'?",
+    "respuesta": 2001,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 15,
+    "categoria": "Cine",
+    "pregunta": "¿Cuántas películas forman la trilogía original de 'El Señor de los Anillos'?",
+    "respuesta": 3,
+    "tipo": "cantidad",
+    "dificultad": "facil"
+  },
+  {
+    "id": 16,
+    "categoria": "Cine",
+    "pregunta": "¿En qué año se estrenó 'Buscando a Nemo'?",
+    "respuesta": 2003,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 17,
+    "categoria": "Cine",
+    "pregunta": "¿Cuántos juguetes principales acompañan a Woody en la habitación de Andy en la primera 'Toy Story' (Woody, Buzz, Rex, Hamm, Sr. Patata, Slinky, Bo Peep y los Marcianitos cuentan como un único grupo)?",
+    "respuesta": 8,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 18,
+    "categoria": "Cine",
+    "pregunta": "¿En qué año se estrenó 'High School Musical'?",
+    "respuesta": 2006,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 19,
+    "categoria": "Cine",
+    "pregunta": "¿Cuántas películas tiene la saga original de 'Crepúsculo'?",
+    "respuesta": 5,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 20,
+    "categoria": "Cine",
+    "pregunta": "¿En qué año ganó 'Ocho apellidos vascos' el Goya a Mejor Actor Revelación para Dani Rovira?",
+    "respuesta": 2015,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 21,
+    "categoria": "Música",
+    "pregunta": "¿En qué año representó Rosa López a España en Eurovisión?",
+    "respuesta": 2002,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 22,
+    "categoria": "Música",
+    "pregunta": "¿Cuántos miembros tenía el grupo One Direction en su formación original?",
+    "respuesta": 5,
+    "tipo": "cantidad",
+    "dificultad": "facil"
+  },
+  {
+    "id": 23,
+    "categoria": "Música",
+    "pregunta": "¿En qué año se publicó el álbum 'El viaje de Copperpot' de La Oreja de Van Gogh?",
+    "respuesta": 2000,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 24,
+    "categoria": "Música",
+    "pregunta": "¿Cuántos miembros formaban el grupo El Canto del Loco?",
+    "respuesta": 5,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 25,
+    "categoria": "Música",
+    "pregunta": "¿En qué año se lanzó 'Waka Waka (This Time for Africa)' de Shakira?",
+    "respuesta": 2010,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 26,
+    "categoria": "Música",
+    "pregunta": "¿Cuántas integrantes tenía el grupo Spice Girls en su formación clásica?",
+    "respuesta": 5,
+    "tipo": "cantidad",
+    "dificultad": "facil"
+  },
+  {
+    "id": 27,
+    "categoria": "Música",
+    "pregunta": "¿En qué puesto terminó Chanel representando a España en Eurovisión 2022?",
+    "respuesta": 3,
+    "tipo": "puesto",
+    "dificultad": "media"
+  },
+  {
+    "id": 28,
+    "categoria": "Música",
+    "pregunta": "¿En qué año ganó David Bisbal la segunda posición en la primera edición de Operación Triunfo?",
+    "respuesta": 2002,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 29,
+    "categoria": "Música",
+    "pregunta": "¿Cuántos álbumes de estudio publicó Hannah Montana como banda sonora de la serie antes de su final?",
+    "respuesta": 3,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 30,
+    "categoria": "Música",
+    "pregunta": "¿En qué año se celebró el primer festival Arenal Sound?",
+    "respuesta": 2010,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 31,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿Cuántos zumbidos seguidos permitía enviar Messenger antes de bloquear temporalmente el botón?",
+    "respuesta": 3,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 32,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿En qué año se lanzó Tuenti?",
+    "respuesta": 2006,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 33,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿Cuántos caracteres permitía originalmente un tuit?",
+    "respuesta": 140,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 34,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿En qué año desapareció Windows Live Messenger?",
+    "respuesta": 2013,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 35,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿Cuántos segundos duraba un Vine?",
+    "respuesta": 6,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 36,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿En qué año nació YouTube?",
+    "respuesta": 2005,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 37,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿Cuál era el número máximo de amigos permitidos en un perfil personal de Facebook?",
+    "respuesta": 5000,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 38,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿En qué año se lanzó Instagram?",
+    "respuesta": 2010,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 39,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿Cuántos caracteres tenía el clásico nick de Messenger si escribías '<3' al principio y al final de tu nombre? (Cada símbolo cuenta como un carácter).",
+    "respuesta": 4,
+    "tipo": "curiosidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 40,
+    "categoria": "Internet y redes sociales",
+    "pregunta": "¿En qué año apareció Spotify en España?",
+    "respuesta": 2009,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 51,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿En qué año se publicó por primera vez 'Harry Potter y la piedra filosofal'?",
+    "respuesta": 1997,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 52,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿Cuántos libros componen la saga principal de Harry Potter?",
+    "respuesta": 7,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 53,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿En qué curso entra Harry Potter en Hogwarts al comienzo de la saga?",
+    "respuesta": 1,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 54,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿Cuántos tributos participan al inicio de unos Juegos del Hambre?",
+    "respuesta": 24,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 55,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿En qué año se publicó el primer libro de 'Crepúsculo'?",
+    "respuesta": 2005,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 56,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿Cuántos libros forman la saga principal de 'Crepúsculo'?",
+    "respuesta": 4,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 57,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿En qué año se publicó el primer libro de 'Los Juegos del Hambre'?",
+    "respuesta": 2008,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 58,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿Cuántos distritos participan en los Juegos del Hambre enviando tributos?",
+    "respuesta": 12,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 59,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿Cuántos libros tiene la colección principal de 'El Diario de Greg' publicados hasta 2025?",
+    "respuesta": 19,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 60,
+    "categoria": "Libros y literatura juvenil",
+    "pregunta": "¿En qué año se publicó 'El código Da Vinci'?",
+    "respuesta": 2003,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 61,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿En qué año se publicó 'Alas de sangre' (Fourth Wing) en inglés?",
+    "respuesta": 2023,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 62,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿Cuántos libros había publicados de la saga Empíreo a finales de 2025?",
+    "respuesta": 3,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 63,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿En qué año se publicó 'La hipótesis del amor' de Ali Hazelwood en inglés?",
+    "respuesta": 2021,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 64,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿Cuántas novelas para adultos había publicado Ali Hazelwood hasta finales de 2025?",
+    "respuesta": 6,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 65,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿En qué año se publicó 'Una corte de rosas y espinas' (A Court of Thorns and Roses)?",
+    "respuesta": 2015,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 66,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿Cuántos libros principales tenía publicada la saga 'Una corte de rosas y espinas' a finales de 2025?",
+    "respuesta": 5,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 67,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿En qué año se publicó 'Powerless' de Lauren Roberts?",
+    "respuesta": 2023,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 68,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿Cuántos libros principales tenía publicada la saga 'Powerless' a finales de 2025?",
+    "respuesta": 3,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 69,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿En qué año se publicó 'Divine Rivals' de Rebecca Ross?",
+    "respuesta": 2023,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 70,
+    "categoria": "BookTok y Romantasy",
+    "pregunta": "¿Cuántos libros componen la bilogía 'Letters of Enchantment'?",
+    "respuesta": 2,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 71,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿En qué año llegó Tamagotchi por primera vez a España?",
+    "respuesta": 1997,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 72,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿Cuántas mascotas iniciales se podían obtener en el Tamagotchi original según sus cuidados?",
+    "respuesta": 7,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 73,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿En qué año se lanzó la primera muñeca Bratz?",
+    "respuesta": 2001,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 74,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿Cuántas muñecas formaban la colección original de Bratz?",
+    "respuesta": 4,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 75,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿En qué año apareció Furby?",
+    "respuesta": 1998,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 76,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿Cuántos colores básicos tenía el Cubo de Rubik clásico?",
+    "respuesta": 6,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 77,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿Cuántas piezas tiene un Cubo de Rubik 3×3 visibles desde el exterior?",
+    "respuesta": 26,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 78,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿En qué año salió al mercado Beyblade en Japón?",
+    "respuesta": 1999,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 79,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿Cuántas canicas eran necesarias habitualmente para comenzar una partida tradicional en círculo entre dos jugadores?",
+    "respuesta": 1,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 80,
+    "categoria": "Juguetes e infancia",
+    "pregunta": "¿En qué año apareció Polly Pocket en su formato original?",
+    "respuesta": 1989,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 81,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿En qué año se lanzó Kinder Bueno en España?",
+    "respuesta": 1991,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 82,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿Cuántas chocolatinas contiene un paquete clásico de Kinder Bueno?",
+    "respuesta": 2,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 83,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿Cuántos chicles vienen habitualmente en un paquete de Orbit Gragea?",
+    "respuesta": 10,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 84,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿En qué año comenzó a comercializarse Aquarius en España?",
+    "respuesta": 1992,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 85,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿Cuántas puntas tiene una estrella de Chupa Chups?",
+    "respuesta": 8,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 86,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿En qué año se lanzó Red Bull en España?",
+    "respuesta": 1997,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 87,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿Cuántas galletas Oreo contiene un paquete clásico individual?",
+    "respuesta": 6,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 88,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿En qué año comenzó a venderse Coca-Cola Zero en España?",
+    "respuesta": 2006,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 89,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿Cuántas porciones tiene una tarrina clásica de queso El Caserío?",
+    "respuesta": 8,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 90,
+    "categoria": "Marcas y productos",
+    "pregunta": "¿En qué año se lanzó la Nutella en España?",
+    "respuesta": 1966,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 91,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿En qué año abrió Sephora su primera tienda en España?",
+    "respuesta": 1998,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 92,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿En qué año llegó Primark a España con su primera tienda?",
+    "respuesta": 2006,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 93,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿Cuántos charms suelen caber aproximadamente en una pulsera Pandora clásica de 19 cm completamente llena?",
+    "respuesta": 18,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 94,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿En qué año abrió IKEA su primera tienda en España?",
+    "respuesta": 1996,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 95,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿Cuántas brochas componen el set básico de maquillaje de Real Techniques (Core Collection)?",
+    "respuesta": 4,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 96,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿En qué año nació la marca Mr. Wonderful?",
+    "respuesta": 2011,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 97,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿Cuántos pasos tiene la famosa rutina coreana de cuidado facial que popularizó el K-Beauty?",
+    "respuesta": 10,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 98,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿En qué año abrió Tiger su primera tienda en España?",
+    "respuesta": 2008,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 99,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿Cuántas letras tiene el icónico logo de TOUS?",
+    "respuesta": 4,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 100,
+    "categoria": "Belleza, compras y lifestyle",
+    "pregunta": "¿En qué año abrió el primer establecimiento de KIKO Milano en España?",
+    "respuesta": 2009,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 101,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿En qué año se casaron los entonces Príncipes Felipe y Letizia?",
+    "respuesta": 2004,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 102,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿Cuántos hijos tienen David y Victoria Beckham?",
+    "respuesta": 4,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 103,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿En qué año comenzó a emitirse el programa 'Sálvame'?",
+    "respuesta": 2009,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 104,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿Qué número de edición ganó Rosa López en 'Operación Triunfo'?",
+    "respuesta": 1,
+    "tipo": "edición",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 105,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿En qué año nació Tamara Falcó?",
+    "respuesta": 1981,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 106,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿Cuántos hijos tiene Isabel Pantoja?",
+    "respuesta": 2,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 107,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿En qué puesto quedó David Bisbal en la primera edición de 'Operación Triunfo'?",
+    "respuesta": 2,
+    "tipo": "puesto",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 108,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿Cuántos hijos tiene Shakira?",
+    "respuesta": 2,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 109,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿En qué año ganó Belén Esteban 'Gran Hermano VIP'?",
+    "respuesta": 2015,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 110,
+    "categoria": "Famosos y prensa rosa",
+    "pregunta": "¿Cuántos años estuvo en antena 'Aquí hay tomate'?",
+    "respuesta": 5,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 121,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿En qué año comenzaron a circular las monedas y billetes de euro en España?",
+    "respuesta": 2002,
+    "tipo": "año",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 122,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿Cuántas uvas se comen tradicionalmente durante las campanadas de Nochevieja en España?",
+    "respuesta": 12,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 123,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿En qué año se estrenó el programa 'El Diario de Patricia'?",
+    "respuesta": 2001,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 124,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿Cuántos décimos componen un billete completo de la Lotería de Navidad?",
+    "respuesta": 10,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 125,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿En qué año se emitió por primera vez el anuncio de la Lotería de Navidad protagonizado por el personaje conocido como 'Justino'?",
+    "respuesta": 2015,
+    "tipo": "año",
+    "dificultad": "alta"
+  },
+  {
+    "id": 126,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿Cuántos números tiene un cartón clásico de bingo?",
+    "respuesta": 15,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 127,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿En qué año se estrenó 'Tu cara me suena'?",
+    "respuesta": 2011,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 128,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿Cuántos números contiene un cupón diario de la ONCE?",
+    "respuesta": 5,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 129,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿En qué año comenzó a emitirse 'El Hormiguero'?",
+    "respuesta": 2006,
+    "tipo": "año",
+    "dificultad": "media"
+  },
+  {
+    "id": 130,
+    "categoria": "Cultura popular española",
+    "pregunta": "¿Cuántas hormigas presentadoras aparecen habitualmente en 'El Hormiguero'?",
+    "respuesta": 2,
+    "tipo": "cantidad",
+    "dificultad": "fácil"
+  },
+  {
+    "id": 131,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros mide aproximadamente la Muralla China (incluyendo todas sus ramificaciones)?",
+    "respuesta": 21196,
+    "tipo": "cantidad",
+    "dificultad": "extrema"
+  },
+  {
+    "id": 132,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos metros de altura tiene el monte Everest?",
+    "respuesta": 8849,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 133,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente el desierto del Sáhara?",
+    "respuesta": 9200000,
+    "tipo": "cantidad",
+    "dificultad": "extrema"
+  },
+  {
+    "id": 134,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene España?",
+    "respuesta": 505990,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 135,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Japón?",
+    "respuesta": 123000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 136,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Australia?",
+    "respuesta": 27000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 137,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros mide aproximadamente el río Amazonas?",
+    "respuesta": 6400,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 138,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros mide aproximadamente el río Nilo?",
+    "respuesta": 6650,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 139,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros separan aproximadamente Madrid y Nueva York en línea recta?",
+    "respuesta": 5760,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 140,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros separan aproximadamente Madrid y Tokio en línea recta?",
+    "respuesta": 10760,
+    "tipo": "cantidad",
+    "dificultad": "extrema"
+  },
+  {
+    "id": 141,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos metros de profundidad alcanza aproximadamente la Fosa de las Marianas?",
+    "respuesta": 10935,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 142,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente la isla de Mallorca?",
+    "respuesta": 3640,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 143,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Islandia?",
+    "respuesta": 103000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 144,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Madrid capital?",
+    "respuesta": 3500000,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 145,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Barcelona capital?",
+    "respuesta": 1700000,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 146,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Francia metropolitana?",
+    "respuesta": 551695,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 147,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Italia?",
+    "respuesta": 301340,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 148,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Alemania?",
+    "respuesta": 357588,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 149,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Groenlandia?",
+    "respuesta": 2166000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 150,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Australia?",
+    "respuesta": 7692024,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 151,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántas piezas tiene el set LEGO Titanic?",
+    "respuesta": 9090,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 152,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántas piezas tiene el set LEGO Eiffel Tower?",
+    "respuesta": 10001,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 153,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos escalones hay aproximadamente hasta la segunda planta de la Torre Eiffel?",
+    "respuesta": 674,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 154,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos litros de agua contiene aproximadamente una piscina olímpica llena?",
+    "respuesta": 2500000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 155,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos metros mide una maratón oficial?",
+    "respuesta": 42195,
+    "tipo": "cantidad",
+    "dificultad": "media"
+  },
+  {
+    "id": 156,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros tiene aproximadamente la costa española?",
+    "respuesta": 7905,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 157,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados ocupa aproximadamente la Antártida?",
+    "respuesta": 14000000,
+    "tipo": "cantidad",
+    "dificultad": "extrema"
+  },
+  {
+    "id": 158,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Canadá?",
+    "respuesta": 41000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 159,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Brasil?",
+    "respuesta": 212000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 160,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Argentina?",
+    "respuesta": 2780400,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 161,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente la Luna?",
+    "respuesta": 37900000,
+    "tipo": "cantidad",
+    "dificultad": "extrema"
+  },
+  {
+    "id": 162,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros recorre la luz en un segundo aproximadamente?",
+    "respuesta": 300000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 163,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros hay aproximadamente entre la Tierra y la Luna?",
+    "respuesta": 384400,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 164,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros hay aproximadamente entre la Tierra y el Sol?",
+    "respuesta": 149600000,
+    "tipo": "cantidad",
+    "dificultad": "extrema"
+  },
+  {
+    "id": 165,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros de diámetro tiene aproximadamente la Tierra?",
+    "respuesta": 12742,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 166,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros de diámetro tiene aproximadamente Júpiter?",
+    "respuesta": 139820,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 167,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros de diámetro tiene aproximadamente la Luna?",
+    "respuesta": 3475,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 168,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántas estrellas visibles aproximadamente contiene la bandera de la Unión Europea en todas sus versiones oficiales?",
+    "respuesta": 12,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 169,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente la Unión Europea?",
+    "respuesta": 449000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 170,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente la Unión Europea?",
+    "respuesta": 4233000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 171,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Rusia?",
+    "respuesta": 17098246,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 172,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Nigeria?",
+    "respuesta": 237000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 173,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Canadá?",
+    "respuesta": 9985000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 174,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente China?",
+    "respuesta": 9597000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 175,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Estados Unidos?",
+    "respuesta": 9834000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 176,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Indonesia?",
+    "respuesta": 285000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 177,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente India?",
+    "respuesta": 3287000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 178,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente México?",
+    "respuesta": 131000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 179,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos habitantes tiene aproximadamente Egipto?",
+    "respuesta": 107000000,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  },
+  {
+    "id": 180,
+    "categoria": "Aproxima",
+    "pregunta": "¿Cuántos kilómetros cuadrados tiene aproximadamente Japón?",
+    "respuesta": 377975,
+    "tipo": "cantidad",
+    "dificultad": "alta"
+  }
+]

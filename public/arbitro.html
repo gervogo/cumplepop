@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CumplePop — Árbitro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --cream: #FDF8F5;
+        --fuchsia: #FF1493;
+        --yellow: #FFD700;
+        --lila: #DDA0DD;
+        --black: #1A1A1A;
+        --white: #FFFFFF;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        background: var(--cream);
+        font-family: 'Kalam', cursive;
+        color: var(--black);
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .header h1 {
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--fuchsia);
+      }
+
+      .header .subtitle {
+        font-size: 0.95rem;
+        opacity: 0.5;
+        margin-top: 4px;
+      }
+
+      .status-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        font-family: 'Fredoka', sans-serif;
+        font-size: 0.9rem;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ccc;
+        border: 2px solid var(--black);
+      }
+      .status-dot.connected { background: #4CAF50; }
+
+      .controls {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        border: 3px solid var(--black);
+        box-shadow: 4px 4px 0px var(--black);
+        padding: 0.6em 1.4em;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.1s;
+        background: var(--white);
+        color: var(--black);
+      }
+      .btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px var(--black);
+      }
+      .btn-primary {
+        background: var(--fuchsia);
+        color: var(--white);
+      }
+      .btn-reveal {
+        background: var(--yellow);
+        color: var(--black);
+      }
+      .btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .question-card {
+        max-width: 700px;
+        margin: 0 auto 24px;
+        background: var(--white);
+        border: 3px solid var(--black);
+        box-shadow: 5px 5px 0px var(--black);
+        border-radius: 16px;
+        padding: 24px;
+      }
+
+      .q-category {
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--fuchsia);
+        margin-bottom: 8px;
+      }
+
+      .q-text {
+        font-weight: 700;
+        font-size: 1.3rem;
+        line-height: 1.4;
+        margin-bottom: 16px;
+      }
+
+      .q-answer {
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 700;
+        font-size: 2rem;
+        color: var(--fuchsia);
+        border: 3px dashed var(--fuchsia);
+        border-radius: 12px;
+        padding: 8px 16px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .q-answer.visible { opacity: 1; }
+
+      .q-meta {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+        font-size: 0.85rem;
+        opacity: 0.5;
+      }
+
+      .category-select {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+
+      .cat-btn {
+        font-family: 'Fredoka', sans-serif;
+        font-size: 0.8rem;
+        border: 2px solid var(--black);
+        background: var(--white);
+        padding: 0.3em 0.8em;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .cat-btn.active {
+        background: var(--lila);
+        color: var(--black);
+      }
+      .cat-btn:hover { background: #f0e8f0; }
+
+      .keyboard-hint {
+        text-align: center;
+        font-family: 'Fredoka', sans-serif;
+        font-size: 0.8rem;
+        opacity: 0.3;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Modo Árbitro</h1>
+      <div class="subtitle">Controla lo que se muestra en la TV</div>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Desconectado</span>
+      <span style="margin-left:12px; opacity:0.4" id="questionCounter"></span>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="btnPrev" disabled>← Anterior</button>
+      <button class="btn btn-primary" id="btnNext">Siguiente →</button>
+      <button class="btn btn-reveal" id="btnReveal">Revelar respuesta</button>
+      <button class="btn" id="btnHide" style="display:none">Ocultar respuesta</button>
+      <button class="btn" id="btnShuffle" style="background:var(--lila)">🔀 Barajar</button>
+    </div>
+
+    <div class="question-card" id="questionCard">
+      <div class="q-category" id="qCategory"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-answer" id="qAnswer"></div>
+      <div class="q-meta">
+        <span id="qType"></span>
+        <span id="qDifficulty"></span>
+      </div>
+    </div>
+
+    <div class="keyboard-hint">
+      ← → cambiar pregunta &nbsp;|&nbsp; Espacio revelar/ocultar respuesta
+    </div>
+
+    <script>
+      const btnPrev = document.getElementById('btnPrev')
+      const btnNext = document.getElementById('btnNext')
+      const btnReveal = document.getElementById('btnReveal')
+      const btnHide = document.getElementById('btnHide')
+      const btnShuffle = document.getElementById('btnShuffle')
+      const statusDot = document.getElementById('statusDot')
+      const statusText = document.getElementById('statusText')
+      const questionCounter = document.getElementById('questionCounter')
+      const qCategory = document.getElementById('qCategory')
+      const qText = document.getElementById('qText')
+      const qAnswer = document.getElementById('qAnswer')
+      const qType = document.getElementById('qType')
+      const qDifficulty = document.getElementById('qDifficulty')
+
+      let questions = []
+      let currentIndex = 0
+      let revealAnswer = false
+      let order = []
+      let ws = null
+
+      fetch('/data/preguntas.json')
+        .then(r => r.json())
+        .then(data => {
+          questions = data
+          connectWS()
+        })
+
+      function connectWS() {
+        const proto = location.protocol === 'https:' ? 'wss' : 'ws'
+        ws = new WebSocket(`${proto}://${location.host}`)
+
+        ws.onopen = () => {
+          statusDot.classList.add('connected')
+          statusText.textContent = 'Conectado'
+        }
+
+        ws.onclose = () => {
+          statusDot.classList.remove('connected')
+          statusText.textContent = 'Desconectado'
+          setTimeout(connectWS, 2000)
+        }
+
+        ws.onmessage = (e) => {
+          const state = JSON.parse(e.data)
+          currentIndex = state.questionIndex || 0
+          revealAnswer = state.revealAnswer || false
+          order = state.order || questions.map((_, i) => i)
+          renderLocal()
+        }
+      }
+
+      function sendState() {
+        if (ws && ws.readyState === 1) {
+          ws.send(JSON.stringify({
+            type: 'question',
+            questionIndex: currentIndex,
+            revealAnswer,
+          }))
+        }
+      }
+
+      function renderLocal() {
+        if (!order.length) return
+        const qIdx = order[currentIndex]
+        const q = questions[qIdx]
+        if (!q) return
+
+        questionCounter.textContent = `${currentIndex + 1} / ${order.length}`
+        qCategory.textContent = q.categoria
+        qText.textContent = q.pregunta
+        qType.textContent = `Tipo: ${q.tipo}`
+        qDifficulty.textContent = `Dificultad: ${q.dificultad}`
+
+        if (revealAnswer) {
+          qAnswer.textContent = q.respuesta
+          qAnswer.classList.add('visible')
+          btnReveal.style.display = 'none'
+          btnHide.style.display = ''
+        } else {
+          qAnswer.classList.remove('visible')
+          qAnswer.textContent = ''
+          btnReveal.style.display = ''
+          btnHide.style.display = 'none'
+        }
+
+        btnPrev.disabled = currentIndex <= 0
+        btnNext.disabled = currentIndex >= order.length - 1
+      }
+
+      btnPrev.onclick = () => {
+        if (currentIndex > 0) {
+          currentIndex--
+          revealAnswer = false
+          renderLocal()
+          sendState()
+        }
+      }
+
+      btnNext.onclick = () => {
+        if (currentIndex < order.length - 1) {
+          currentIndex++
+          revealAnswer = false
+          renderLocal()
+          sendState()
+        }
+      }
+
+      btnReveal.onclick = () => {
+        revealAnswer = true
+        renderLocal()
+        sendState()
+      }
+
+      btnHide.onclick = () => {
+        revealAnswer = false
+        renderLocal()
+        sendState()
+      }
+
+      btnShuffle.onclick = () => {
+        if (ws && ws.readyState === 1) {
+          ws.send(JSON.stringify({ action: 'shuffle' }))
+        }
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault()
+          btnPrev.click()
+        } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault()
+          btnNext.click()
+        } else if (e.key === ' ') {
+          e.preventDefault()
+          if (revealAnswer) btnHide.click()
+          else btnReveal.click()
+        }
+      })
+    </script>
+  </body>
+</html>
