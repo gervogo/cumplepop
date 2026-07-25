@@ -449,6 +449,7 @@
   <img class="bg-icon" src="assets/icons-bg/icon-25.png" style="top:32%;right:2%;transform:rotate(-20deg)" alt="">
 
   <div class="flash" id="flash"></div>
+  <audio id="explosionSfx" src="assets/explosion.mp3" preload="auto"></audio>
 
   <!-- ===== SPLASH SCREEN ===== -->
   <div class="screen active" id="splash">
@@ -547,6 +548,7 @@
   const resultTime = document.getElementById('resultTime');
   const startBtn = document.getElementById('startBtn');
   const restartBtn = document.getElementById('restartBtn');
+  const explosionSfx = document.getElementById('explosionSfx');
 
   // ======== HAPTICS ========
   // iOS 26.5+: haptic SOLO dispara cuando el usuario toca físicamente un <input switch>.
@@ -979,6 +981,8 @@
     stopAudioLoop();
     hideHapticOverlay();
 
+    explosionSfx.currentTime = 0;
+    explosionSfx.play().catch(() => {});
     triggerExplosionHaptic();
 
     document.getElementById('flash').classList.add('bang');
@@ -1061,8 +1065,8 @@
       // Centering force when no gyro input
       const gyroInactive = Math.abs(gyroSmooth.gamma) < GYRO_DEADZONE && Math.abs(gyroSmooth.beta - 45) < 8;
       if (gyroInactive) {
-        physics.velPX -= physics.posX * 0.06;
-        physics.velPY -= physics.posY * 0.06;
+        physics.velPX -= physics.posX * 0.012;
+        physics.velPY -= physics.posY * 0.012;
       }
 
       physics.posX += physics.velPX;
