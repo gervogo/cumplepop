@@ -47,6 +47,8 @@
         width: clamp(140px, 28vw, 260px);
         height: auto;
         margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
       }
 
       .sticker {
@@ -55,6 +57,7 @@
         opacity: 0.18;
         width: clamp(35px, 7vw, 70px);
         height: auto;
+        z-index: 0;
       }
 
       .counter {
@@ -62,6 +65,8 @@
         font-size: 0.85rem;
         opacity: 0.35;
         margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
       }
 
       .question-card {
@@ -73,6 +78,8 @@
         border-radius: 16px;
         padding: 20px;
         margin-bottom: 0;
+        position: relative;
+        z-index: 1;
       }
 
       .q-category {
@@ -118,6 +125,8 @@
         display: flex;
         justify-content: center;
         padding: 10px 0 6px;
+        position: relative;
+        z-index: 1;
       }
 
       .bottom-bar {
