@@ -681,99 +681,109 @@
     setTimeout(() => audioTick(0.6), 160);
   }
 
-  // ======== GYROSCOPE ========
+  // ======== GYROSCOPE (filtered) ========
   let gyroPermissionGranted = false;
   let gyroEnabled = false;
 
-  // Raw sensor values
-  let gyroAlpha = 0, gyroBeta = 0, gyroGamma = 0;
+  // Low-pass filter state
+  const gyroSmooth = { alpha: 0, beta: 45, gamma: 0 };
+  const gyroRaw = { alpha: 0, beta: 45, gamma: 0 };
+  const GYRO_FILTER = 0.3;
+  const GYRO_DEADZONE = 3;
 
-  // --- 1. SHAKE DETECTION ---
-  const shake = { history: [], threshold: 18, cooldown: 0, pushForce: 0 };
-  function detectShake(gamma) {
+  function filterGyro(a, b, g) {
+    gyroRaw.alpha = a; gyroRaw.beta = b; gyroRaw.gamma = g;
+    gyroSmooth.alpha += GYRO_FILTER * (a - gyroSmooth.alpha);
+    gyroSmooth.beta += GYRO_FILTER * (b - gyroSmooth.beta);
+    gyroSmooth.gamma += GYRO_FILTER * (g - gyroSmooth.gamma);
+    if (Math.abs(gyroSmooth.gamma) < GYRO_DEADZONE) gyroSmooth.gamma = 0;
+  }
+
+  // --- 1. SHAKE ---
+  const shake = { buf: [], lastFire: 0, pushForce: 0 };
+  function detectShake(g) {
     const now = performance.now();
-    shake.history.push({ v: gamma, t: now });
-    shake.history = shake.history.filter(e => now - e.t < 250);
-    if (shake.cooldown > 0) { shake.cooldown -= 16; return; }
-    if (shake.history.length < 4) return;
+    shake.buf.push({ v: g, t: now });
+    if (shake.buf.length > 12) shake.buf.shift();
+    if (now - shake.lastFire < 900) return;
+    const recent = shake.buf.filter(e => now - e.t < 400);
+    if (recent.length < 5) return;
     let swings = 0;
-    for (let i = 1; i < shake.history.length; i++) {
-      if (Math.abs(shake.history[i].v - shake.history[i-1].v) > shake.threshold) swings++;
+    for (let i = 1; i < recent.length; i++) {
+      if (Math.abs(recent[i].v - recent[i-1].v) > 22) swings++;
     }
-    if (swings >= 2) {
-      shake.pushForce = 1.8;
-      shake.cooldown = 600;
-      shake.history = [];
+    if (swings >= 3) {
+      shake.pushForce = 2.0;
+      shake.lastFire = now;
+      shake.buf = [];
       triggerHapticBurst();
       audioTick(0.7);
     }
   }
 
-  // --- 2. EXTREME TILT (slow inflation) ---
-  const extremeTilt = { active: false, multiplier: 1 };
-  function detectExtremeTilt(beta) {
-    const isExtreme = beta > 70 || beta < 10;
-    if (isExtreme && !extremeTilt.active) {
+  // --- 2. EXTREME TILT ---
+  const extremeTilt = { active: false, multiplier: 1, lastSwitch: 0 };
+  function detectExtremeTilt(b) {
+    const now = performance.now();
+    if (now - extremeTilt.lastSwitch < 300) return;
+    if (!extremeTilt.active && b > 65) {
       extremeTilt.active = true;
-      extremeTilt.multiplier = 0.4;
-    } else if (!isExtreme && extremeTilt.active) {
+      extremeTilt.multiplier = 0.35;
+      extremeTilt.lastSwitch = now;
+    } else if (extremeTilt.active && b < 55) {
       extremeTilt.active = false;
       extremeTilt.multiplier = 1;
+      extremeTilt.lastSwitch = now;
     }
   }
 
-  // --- 3. ALPHA ROTATION (visual effect) ---
-  const alphaFx = { lastAlpha: 0, delta: 0, intensity: 0 };
-  function detectAlphaRotation(alpha) {
-    let d = alpha - alphaFx.lastAlpha;
+  // --- 3. ALPHA ROTATION ---
+  const alphaFx = { last: null, delta: 0, intensity: 0 };
+  function detectAlphaRotation(a) {
+    if (alphaFx.last === null) { alphaFx.last = a; return; }
+    let d = a - alphaFx.last;
     if (d > 180) d -= 360;
     if (d < -180) d += 360;
     alphaFx.delta = d;
-    alphaFx.lastAlpha = alpha;
-    alphaFx.intensity = Math.min(1, Math.abs(d) / 25);
+    alphaFx.last = a;
+    alphaFx.intensity = Math.abs(d) > 5 ? Math.min(1, Math.abs(d) / 20) : alphaFx.intensity * 0.9;
   }
 
-  // --- 4. DOUBLE SWAY (wind effect) ---
-  const sway = { crossings: [], windForce: 0, cooldown: 0 };
-  function detectSway(gamma) {
+  // --- 4. SWAY ---
+  const sway = { buf: [], windForce: 0, lastFire: 0 };
+  function detectSway(g) {
     const now = performance.now();
-    if (sway.cooldown > 0) { sway.cooldown -= 16; return; }
-    sway.crossings.push({ v: gamma, t: now });
-    sway.crossings = sway.crossings.filter(e => now - e.t < 500);
-    let signChanges = 0;
-    for (let i = 1; i < sway.crossings.length; i++) {
-      if ((sway.crossings[i].v > 0 && sway.crossings[i-1].v <= 0) ||
-          (sway.crossings[i].v < 0 && sway.crossings[i-1].v >= 0)) signChanges++;
+    if (now - sway.lastFire < 1100) return;
+    if (Math.abs(g) < 10) return;
+    sway.buf.push({ v: g, t: now });
+    sway.buf = sway.buf.filter(e => now - e.t < 600);
+    let crosses = 0;
+    for (let i = 1; i < sway.buf.length; i++) {
+      if ((sway.buf[i].v > 0) !== (sway.buf[i-1].v > 0)) crosses++;
     }
-    if (signChanges >= 3) {
-      sway.windForce = gamma > 0 ? 1.2 : -1.2;
-      sway.cooldown = 800;
-      sway.crossings = [];
+    if (crosses >= 3) {
+      sway.windForce = g > 0 ? 1.5 : -1.5;
+      sway.lastFire = now;
+      sway.buf = [];
       audioTick(0.5);
     }
   }
 
-  // --- 5. TILT RESCUE (freeze timer) ---
-  const rescue = { holding: false, holdStart: 0, cooldown: 0, frozen: false, freezeEnd: 0 };
-  const RESCUE_ANGLE_MIN = 30, RESCUE_ANGLE_MAX = 55;
-  const RESCUE_HOLD_TIME = 1000, RESCUE_FREEZE_DURATION = 3000, RESCUE_COOLDOWN = 12000;
-  function detectRescue(beta) {
+  // --- 5. TILT RESCUE ---
+  const rescue = { holding: false, holdStart: 0, lastFire: 0, frozen: false, freezeEnd: 0 };
+  const RESCUE_MIN = 25, RESCUE_MAX = 50, RESCUE_HOLD = 1200, RESCUE_FREEZE = 3000, RESCUE_CD = 15000;
+  function detectRescue(b) {
     const now = performance.now();
-    if (rescue.cooldown > 0) rescue.cooldown -= 16;
     if (rescue.frozen && now < rescue.freezeEnd) return;
-    if (rescue.frozen) { rescue.frozen = false; }
-    if (rescue.cooldown > 0) { rescue.holding = false; return; }
-    const inRange = beta >= RESCUE_ANGLE_MIN && beta <= RESCUE_ANGLE_MAX;
-    if (inRange && !rescue.holding) {
-      rescue.holding = true;
-      rescue.holdStart = now;
-    } else if (!inRange) {
-      rescue.holding = false;
-    }
-    if (rescue.holding && (now - rescue.holdStart) >= RESCUE_HOLD_TIME) {
+    if (rescue.frozen) rescue.frozen = false;
+    if (now - rescue.lastFire < RESCUE_CD) { rescue.holding = false; return; }
+    const inRange = b >= RESCUE_MIN && b <= RESCUE_MAX;
+    if (inRange && !rescue.holding) { rescue.holding = true; rescue.holdStart = now; }
+    else if (!inRange) { rescue.holding = false; }
+    if (rescue.holding && (now - rescue.holdStart) >= RESCUE_HOLD) {
       rescue.frozen = true;
-      rescue.freezeEnd = now + RESCUE_FREEZE_DURATION;
-      rescue.cooldown = RESCUE_COOLDOWN;
+      rescue.freezeEnd = now + RESCUE_FREEZE;
+      rescue.lastFire = now;
       rescue.holding = false;
       triggerHapticBurst();
       audioTick(0.9);
@@ -789,10 +799,7 @@
         typeof DeviceOrientationEvent.requestPermission === 'function') {
       try {
         const result = await DeviceOrientationEvent.requestPermission();
-        if (result === 'granted') {
-          gyroPermissionGranted = true;
-          startGyroListener();
-        }
+        if (result === 'granted') { gyroPermissionGranted = true; startGyroListener(); }
       } catch(e) {}
     } else {
       gyroPermissionGranted = true;
@@ -804,25 +811,21 @@
     window.addEventListener('deviceorientation', (e) => {
       if (!gyroPermissionGranted || !gameStarted || isExploded) return;
       gyroEnabled = true;
-      const gamma = e.gamma || 0;
-      const beta = e.beta || 0;
-      const alpha = e.alpha || 0;
-      gyroAlpha = alpha;
-      gyroBeta = beta;
-      gyroGamma = gamma;
+      const g = e.gamma || 0, b = e.beta || 0, a = e.alpha || 0;
+      filterGyro(a, b, g);
 
-      // Basic tilt → balloon position
-      const normGamma = Math.max(-1, Math.min(1, gamma / 30));
-      const normBeta = Math.max(-1, Math.min(1, (beta - 45) / 30));
-      physics.targetTiltZ = normGamma * physics.maxTilt;
-      physics.targetTiltX = normBeta * physics.maxTilt * 0.5;
+      // Tilt uses raw values (responsive)
+      const normG = Math.max(-1, Math.min(1, g / 30));
+      const normB = Math.max(-1, Math.min(1, (b - 45) / 30));
+      physics.targetTiltZ = normG * physics.maxTilt;
+      physics.targetTiltX = normB * physics.maxTilt * 0.5;
 
-      // Detect interactions
-      detectShake(gamma);
-      detectExtremeTilt(beta);
-      detectAlphaRotation(alpha);
-      detectSway(gamma);
-      detectRescue(beta);
+      // Detection uses filtered values (stable)
+      detectShake(gyroSmooth.gamma);
+      detectExtremeTilt(gyroSmooth.beta);
+      detectAlphaRotation(gyroSmooth.alpha);
+      detectSway(gyroSmooth.gamma);
+      detectRescue(gyroSmooth.beta);
     });
   }
 
@@ -1115,11 +1118,11 @@
     physics.velZ = 0;
 
     // Reset gyro state
-    shake.pushForce = 0; shake.history = []; shake.cooldown = 0;
+    shake.pushForce = 0; shake.buf = [];
     extremeTilt.active = false; extremeTilt.multiplier = 1;
-    alphaFx.intensity = 0; alphaFx.delta = 0;
-    sway.windForce = 0; sway.crossings = []; sway.cooldown = 0;
-    rescue.holding = false; rescue.frozen = false; rescue.cooldown = 0;
+    alphaFx.intensity = 0; alphaFx.delta = 0; alphaFx.last = null;
+    sway.windForce = 0; sway.buf = [];
+    rescue.holding = false; rescue.frozen = false;
 
     showHapticOverlay();
     startAudioLoop();
@@ -1169,11 +1172,11 @@
     balloon.rotation.set(0, 0, 0);
     balloon.position.set(0, 0, 0);
     // Reset gyro state
-    shake.pushForce = 0; shake.history = []; shake.cooldown = 0;
+    shake.pushForce = 0; shake.buf = [];
     extremeTilt.active = false; extremeTilt.multiplier = 1;
-    alphaFx.intensity = 0; alphaFx.delta = 0;
-    sway.windForce = 0; sway.crossings = []; sway.cooldown = 0;
-    rescue.holding = false; rescue.frozen = false; rescue.cooldown = 0;
+    alphaFx.intensity = 0; alphaFx.delta = 0; alphaFx.last = null;
+    sway.windForce = 0; sway.buf = [];
+    rescue.holding = false; rescue.frozen = false;
     // Reset balloon emissive
     balloonMat.emissive = new THREE.Color(0x000000);
     balloonMat.emissiveIntensity = 0;
