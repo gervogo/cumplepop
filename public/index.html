@@ -77,10 +77,13 @@
 
     /* ===== SPLASH — ZINE POP ===== */
     #splash {
-      background: var(--cream);
+      background: rgba(253, 248, 245, 0.82);
       padding: 0;
       gap: 0;
       overflow: hidden;
+      justify-content: space-between;
+      padding-top: 8vh;
+      padding-bottom: 12vh;
     }
 
     /* SVG decorative background shapes */
@@ -103,6 +106,7 @@
       z-index: 10;
       text-align: center;
       margin-bottom: 12px;
+      margin-top: -10vh;
     }
     .title-cumple {
       font-family: 'Fredoka', sans-serif;
@@ -470,23 +474,7 @@
   <!-- ===== SPLASH SCREEN ===== -->
   <div class="screen active" id="splash">
     <div class="title-block">
-      <img src="assets/cumplepop.png" alt="CumplePop" style="max-width: 80vw; max-height: 30vh; object-fit: contain;">
-    </div>
-
-    <div class="torn-paper">
-      <p>La Patata Caliente</p>
-    </div>
-
-    <div class="balloon-sticker">
-      <div class="balloon-body">
-        <div class="balloon-shine"></div>
-        <div class="balloon-shine2"></div>
-        <div class="balloon-knot"></div>
-        <div class="balloon-string"></div>
-      </div>
-      <div class="sticky-note">
-        <p>¡No lo dejes caer!</p>
-      </div>
+      <img src="assets/cumplepop.png" alt="CumplePop" style="max-width: 70vw; max-height: 22vh; object-fit: contain;">
     </div>
 
     <button class="btn-jugar" id="startBtn">JUGAR</button>
@@ -762,7 +750,14 @@
   const balloon = new THREE.Mesh(balloonGeo, balloonMat);
   balloon.castShadow = true;
   balloon.receiveShadow = true;
-  balloon.visible = false;
+  let splashPhase = 0;
+
+  // Show balloon on splash screen
+  balloon.visible = true;
+  balloon.scale.set(0.8, 0.8, 0.8);
+  balloonMat.color.set(0xFF3366);
+  balloon.position.set(0, -0.2, 0);
+  balloon.rotation.set(0, 0, -0.05);
   scene.add(balloon);
 
   // ======== BALLOON NECK & KNOT ========
@@ -1029,16 +1024,17 @@
     timerAccum = 0;
     stopAudioLoop();
     hideHapticOverlay();
-    balloon.visible = false;
+    balloon.visible = true;
+    balloon.scale.set(0.8, 0.8, 0.8);
+    balloonMat.color.set(0xFF3366);
+    balloonMat.emissive = new THREE.Color(0x000000);
+    balloonMat.emissiveIntensity = 0;
     fragGroup.visible = false;
     for (const f of fragments) f.mesh.visible = false;
     physics.currentTiltX = physics.currentTiltZ = physics.velX = physics.velZ = 0;
     physics.posX = physics.posY = physics.velPX = physics.velPY = 0;
-    balloon.rotation.set(0, 0, 0);
-    balloon.position.set(0, 0, 0);
-    // Reset balloon emissive
-    balloonMat.emissive = new THREE.Color(0x000000);
-    balloonMat.emissiveIntensity = 0;
+    balloon.rotation.set(0, 0, -0.05);
+    balloon.position.set(0, -0.2, 0);
     resultEl.classList.remove('active');
     splash.classList.add('active');
   }
@@ -1117,6 +1113,11 @@
         balloon.rotation.x += Math.sin(now * 0.02) * wobble * 0.08;
         balloon.rotation.z += Math.cos(now * 0.015) * wobble * 0.08;
       }
+    } else if (!gameStarted && !isExploded) {
+      // Splash / result idle float
+      splashPhase += dt * 1.5;
+      balloon.position.y = -0.2 + Math.sin(splashPhase) * 0.12;
+      balloon.rotation.z = Math.sin(splashPhase * 0.7) * 0.03;
     }
 
     updateFragments(dt);
