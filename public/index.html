@@ -554,12 +554,12 @@
     posY: 0,
     velPX: 0,
     velPY: 0,
-    friction: 0.94,
-    accelScale: 0.15,
+    friction: 0.90,
+    accelScale: 0.08,
     // Bounce
-    bounceEnergy: 0.6,
-    boundX: 1.2,
-    boundY: 1.3,
+    bounceEnergy: 0.5,
+    boundX: 0.7,
+    boundY: 1.2,
     // Float
     floatPhase: 0,
     floatSpeed: 1.2,
@@ -896,7 +896,7 @@
   // ======== INFLATION ========
   function getInflationScale() {
     const progress = 1 - (timeLeft / totalTime);
-    return 0.55 + 0.7 * progress;
+    return 0.5 + 0.65 * progress;
   }
 
   function getBalloonColor() {
