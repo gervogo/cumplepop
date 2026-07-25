@@ -19,107 +19,81 @@
 
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      body {
+      html, body {
+        height: 100%;
         background: var(--cream);
         font-family: 'Kalam', cursive;
         color: var(--black);
-        min-height: 100vh;
-        padding: 24px;
+        overflow: hidden;
       }
 
-      .header {
-        text-align: center;
-        margin-bottom: 24px;
+      body {
+        display: flex;
+        flex-direction: column;
       }
 
-      .header h1 {
-        font-family: 'Fredoka', sans-serif;
-        font-weight: 700;
-        font-size: 1.8rem;
-        color: var(--fuchsia);
+      .top-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 16px 24px;
+        overflow: hidden;
       }
 
-      .header .subtitle {
-        font-size: 0.95rem;
-        opacity: 0.5;
-        margin-top: 4px;
+      .logo {
+        width: clamp(140px, 28vw, 260px);
+        height: auto;
+        margin-bottom: 8px;
+      }
+
+      .sticker {
+        position: absolute;
+        pointer-events: none;
+        opacity: 0.18;
+        width: clamp(35px, 7vw, 70px);
+        height: auto;
       }
 
       .counter {
-        text-align: center;
         font-family: 'Fredoka', sans-serif;
-        font-size: 0.9rem;
-        opacity: 0.4;
-        margin-bottom: 16px;
-      }
-
-      .controls {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        margin-bottom: 28px;
-        flex-wrap: wrap;
-      }
-
-      .btn {
-        font-family: 'Fredoka', sans-serif;
-        font-weight: 600;
-        font-size: 1rem;
-        border: 3px solid var(--black);
-        box-shadow: 4px 4px 0px var(--black);
-        padding: 0.6em 1.4em;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: transform 0.1s, box-shadow 0.1s;
-        background: var(--white);
-        color: var(--black);
-      }
-      .btn:active {
-        transform: translate(2px, 2px);
-        box-shadow: 2px 2px 0px var(--black);
-      }
-      .btn-primary {
-        background: var(--fuchsia);
-        color: var(--white);
-      }
-      .btn-reveal {
-        background: var(--yellow);
-        color: var(--black);
-      }
-      .btn:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
+        font-size: 0.85rem;
+        opacity: 0.35;
+        margin-bottom: 12px;
       }
 
       .question-card {
-        max-width: 700px;
-        margin: 0 auto 24px;
+        width: 100%;
+        max-width: 600px;
         background: var(--white);
         border: 3px solid var(--black);
         box-shadow: 5px 5px 0px var(--black);
         border-radius: 16px;
-        padding: 24px;
+        padding: 20px;
+        margin-bottom: 0;
       }
 
       .q-category {
         font-family: 'Fredoka', sans-serif;
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: var(--fuchsia);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
       .q-text {
         font-weight: 700;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         line-height: 1.4;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
       }
 
       .q-answer {
         font-family: 'Fredoka', sans-serif;
         font-weight: 700;
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: var(--fuchsia);
         border: 3px dashed var(--fuchsia);
         border-radius: 12px;
@@ -133,48 +107,96 @@
       .q-meta {
         display: flex;
         gap: 12px;
-        margin-top: 12px;
-        font-size: 0.85rem;
-        opacity: 0.5;
+        margin-top: 10px;
+        font-size: 0.8rem;
+        opacity: 0.4;
       }
 
-      .keyboard-hint {
-        text-align: center;
+      .reveal-bar {
+        width: 100%;
+        max-width: 600px;
+        display: flex;
+        justify-content: center;
+        padding: 10px 0 6px;
+      }
+
+      .bottom-bar {
+        width: 100%;
+        padding: 10px 16px env(safe-area-inset-bottom, 12px);
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        background: var(--cream);
+        border-top: 2px solid rgba(0,0,0,0.06);
+      }
+
+      .btn {
         font-family: 'Fredoka', sans-serif;
-        font-size: 0.8rem;
-        opacity: 0.3;
-        margin-top: 20px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: 3px solid var(--black);
+        box-shadow: 3px 3px 0px var(--black);
+        padding: 0.55em 1.2em;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.1s;
+        background: var(--white);
+        color: var(--black);
+      }
+      .btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0px var(--black);
+      }
+      .btn-primary {
+        background: var(--fuchsia);
+        color: var(--white);
+      }
+      .btn-reveal {
+        background: var(--yellow);
+        color: var(--black);
+      }
+      .btn-shuffle {
+        background: var(--lila);
+      }
+      .btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
       }
     </style>
   </head>
   <body>
-    <div class="header">
-      <h1>Modo Árbitro</h1>
-      <div class="subtitle">Lee las preguntas y revela las respuestas</div>
-    </div>
+    <div class="top-area">
+      <img class="sticker" src="assets/icons-bg/icon-01.png" style="top:6%;left:5%;transform:rotate(12deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-05.png" style="top:10%;right:8%;transform:rotate(-10deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-09.png" style="bottom:20%;left:4%;transform:rotate(18deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-14.png" style="top:50%;right:4%;transform:rotate(-15deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-20.png" style="bottom:15%;right:6%;transform:rotate(22deg)" alt="">
 
-    <div class="counter" id="questionCounter"></div>
+      <img class="logo" src="assets/logo-explotado.png" alt="CumplePop">
 
-    <div class="controls">
-      <button class="btn" id="btnPrev" disabled>← Anterior</button>
-      <button class="btn btn-primary" id="btnNext">Siguiente →</button>
-      <button class="btn btn-reveal" id="btnReveal">Revelar respuesta</button>
-      <button class="btn" id="btnHide" style="display:none">Ocultar respuesta</button>
-      <button class="btn" id="btnShuffle" style="background:var(--lila)">Barajar</button>
-    </div>
+      <div class="counter" id="questionCounter"></div>
 
-    <div class="question-card" id="questionCard">
-      <div class="q-category" id="qCategory"></div>
-      <div class="q-text" id="qText"></div>
-      <div class="q-answer" id="qAnswer"></div>
-      <div class="q-meta">
-        <span id="qType"></span>
-        <span id="qDifficulty"></span>
+      <div class="question-card" id="questionCard">
+        <div class="q-category" id="qCategory"></div>
+        <div class="q-text" id="qText"></div>
+        <div class="q-answer" id="qAnswer"></div>
+        <div class="q-meta">
+          <span id="qType"></span>
+          <span id="qDifficulty"></span>
+        </div>
       </div>
     </div>
 
-    <div class="keyboard-hint">
-      ← → cambiar pregunta &nbsp;|&nbsp; Espacio revelar/ocultar respuesta
+    <div class="reveal-bar">
+      <button class="btn btn-reveal" id="btnReveal">Revelar respuesta</button>
+      <button class="btn btn-reveal" id="btnHide" style="display:none">Ocultar respuesta</button>
+    </div>
+
+    <div class="bottom-bar">
+      <button class="btn" id="btnPrev" disabled>← Anterior</button>
+      <button class="btn btn-shuffle" id="btnShuffle">Barajar</button>
+      <button class="btn btn-primary" id="btnNext">Siguiente →</button>
     </div>
 
     <script>

@@ -84,19 +84,15 @@
       justify-content: center;
     }
 
-    /* SVG decorative background shapes */
-    .zine-deco {
+    /* Background icons */
+    .bg-icon {
       position: absolute;
       pointer-events: none;
       z-index: 1;
+      opacity: 0.18;
+      width: clamp(30px, 6vw, 70px);
+      height: auto;
     }
-    .zine-star1 { top: 6%; left: 8%; transform: rotate(12deg); }
-    .zine-star2 { top: 15%; right: 12%; transform: rotate(-8deg); }
-    .zine-star3 { bottom: 22%; left: 5%; transform: rotate(20deg); }
-    .zine-heart1 { top: 12%; left: 60%; transform: rotate(-5deg); }
-    .zine-heart2 { bottom: 18%; right: 8%; transform: rotate(10deg); }
-    .zine-doodle1 { bottom: 30%; left: 10%; transform: rotate(-15deg); }
-    .zine-doodle2 { top: 25%; right: 6%; transform: rotate(8deg); }
 
     /* Title block */
     .title-block {
@@ -443,28 +439,32 @@
   <div class="washi-tape wt3"></div>
   <div class="washi-tape wt4"></div>
 
-  <!-- SVG decorative shapes -->
-  <div class="zine-deco zine-star1">
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M20 2L24 14L36 14L26 22L30 34L20 26L10 34L14 22L4 14L16 14Z" fill="#FFD700" stroke="#1A1A1A" stroke-width="2"/></svg>
-  </div>
-  <div class="zine-deco zine-star2">
-    <svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 2L24 14L36 14L26 22L30 34L20 26L10 34L14 22L4 14L16 14Z" fill="#DDA0DD" stroke="#1A1A1A" stroke-width="2"/></svg>
-  </div>
-  <div class="zine-deco zine-star3">
-    <svg width="28" height="28" viewBox="0 0 40 40" fill="none"><path d="M20 2L24 14L36 14L26 22L30 34L20 26L10 34L14 22L4 14L16 14Z" fill="#FFB6C1" stroke="#1A1A1A" stroke-width="2"/></svg>
-  </div>
-  <div class="zine-deco zine-heart1">
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 32L3 17C-1 13 0 6 6 4C10 2 14 4 18 10C22 4 26 2 30 4C36 6 37 13 33 17L18 32Z" fill="#FF1493" stroke="#1A1A1A" stroke-width="2"/></svg>
-  </div>
-  <div class="zine-deco zine-heart2">
-    <svg width="30" height="30" viewBox="0 0 36 36" fill="none"><path d="M18 32L3 17C-1 13 0 6 6 4C10 2 14 4 18 10C22 4 26 2 30 4C36 6 37 13 33 17L18 32Z" fill="#FFB6C1" stroke="#1A1A1A" stroke-width="2"/></svg>
-  </div>
-  <div class="zine-deco zine-doodle1">
-    <svg width="44" height="20" viewBox="0 0 44 20" fill="none"><path d="M2 10Q8 2 14 10Q20 18 26 10Q32 2 38 10Q42 16 44 10" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-  </div>
-  <div class="zine-deco zine-doodle2">
-    <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="10" stroke="#1A1A1A" stroke-width="2" fill="none"/><path d="M15 5V25M5 15H25" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/></svg>
-  </div>
+  <!-- Background icons -->
+  <img class="bg-icon" src="assets/icons-bg/icon-01.png" style="top:4%;left:5%;transform:rotate(12deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-02.png" style="top:8%;right:8%;transform:rotate(-8deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-03.png" style="top:14%;left:15%;transform:rotate(20deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-04.png" style="top:6%;left:45%;transform:rotate(-5deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-05.png" style="top:12%;right:15%;transform:rotate(10deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-06.png" style="top:20%;left:8%;transform:rotate(-15deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-07.png" style="top:18%;right:5%;transform:rotate(8deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-08.png" style="top:28%;left:3%;transform:rotate(25deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-09.png" style="top:35%;right:4%;transform:rotate(-12deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-10.png" style="top:40%;left:6%;transform:rotate(18deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-11.png" style="bottom:35%;left:4%;transform:rotate(-20deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-12.png" style="bottom:30%;right:6%;transform:rotate(15deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-13.png" style="bottom:25%;left:8%;transform:rotate(-8deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-14.png" style="bottom:20%;right:10%;transform:rotate(22deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-15.png" style="bottom:15%;left:12%;transform:rotate(-18deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-16.png" style="bottom:10%;right:8%;transform:rotate(10deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-17.png" style="bottom:5%;left:6%;transform:rotate(-25deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-18.png" style="bottom:8%;right:5%;transform:rotate(15deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-19.png" style="top:45%;left:2%;transform:rotate(-10deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-20.png" style="top:50%;right:3%;transform:rotate(20deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-21.png" style="bottom:40%;right:3%;transform:rotate(-15deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-22.png" style="top:25%;left:2%;transform:rotate(8deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-23.png" style="bottom:28%;left:2%;transform:rotate(-12deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-24.png" style="top:55%;left:3%;transform:rotate(25deg)" alt="">
+  <img class="bg-icon" src="assets/icons-bg/icon-25.png" style="bottom:45%;right:4%;transform:rotate(-20deg)" alt="">
 
   <div class="flash" id="flash"></div>
 
@@ -506,13 +506,17 @@
   </div>
 </div>
 
-<!-- Haptic overlay — outside canvas-container, direct child of body -->
-<div id="haptic-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:none;">
-  <input type="checkbox" switch id="game-haptic"
-    style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.01;-webkit-appearance:auto;appearance:auto;margin:0;padding:0;border:none;background:transparent;">
-</div>
+  <!-- Haptic overlay — outside canvas-container, direct child of body -->
+  <div id="haptic-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:none;">
+    <input type="checkbox" switch id="game-haptic"
+      style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.01;-webkit-appearance:auto;appearance:auto;margin:0;padding:0;border:none;background:transparent;">
+  </div>
 
-<script>
+  <script type="module">
+    import { WebHaptics } from 'https://esm.sh/web-haptics';
+    window.__haptics = new WebHaptics();
+  </script>
+  <script>
 (function() {
   // ======== STATE ========
   const MIN_TIME = 50;
@@ -648,7 +652,8 @@
   }
 
   function triggerHapticBurst() {
-    if (hasVibrate) navigator.vibrate([30, 20, 30]);
+    if (window.__haptics) window.__haptics.trigger('heavy');
+    else if (hasVibrate) navigator.vibrate([30, 20, 30]);
   }
 
   async function requestGyroPermission() {
@@ -1070,6 +1075,14 @@
       // --- Position (bounce physics) ---
       physics.velPX *= physics.friction;
       physics.velPY *= physics.friction;
+
+      // Centering force when no gyro input
+      const gyroInactive = Math.abs(gyroSmooth.gamma) < GYRO_DEADZONE && Math.abs(gyroSmooth.beta - 45) < 8;
+      if (gyroInactive) {
+        physics.velPX -= physics.posX * 0.06;
+        physics.velPY -= physics.posY * 0.06;
+      }
+
       physics.posX += physics.velPX;
       physics.posY += physics.velPY;
 
