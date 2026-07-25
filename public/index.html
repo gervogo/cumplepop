@@ -426,42 +426,6 @@
     }
     .flash.bang { opacity: 0.85; }
 
-    /* ===== EFFECT INDICATORS ===== */
-    .fx-bar {
-      position: absolute;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 35;
-      display: flex;
-      gap: 8px;
-      pointer-events: none;
-    }
-    .fx-pill {
-      display: none;
-      padding: 5px 12px;
-      border-radius: 20px;
-      border: 2px solid var(--black);
-      font-family: 'Fredoka', sans-serif;
-      font-weight: 600;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      animation: fxPopIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .fx-pill.visible { display: block; }
-    .fx-shake { background: var(--yellow); color: var(--black); box-shadow: 3px 3px 0px var(--black); }
-    .fx-slow { background: #87CEEB; color: var(--black); box-shadow: 3px 3px 0px var(--black); }
-    .fx-wind { background: var(--lila); color: var(--black); box-shadow: 3px 3px 0px var(--black); }
-    .fx-freeze { background: #00FF88; color: var(--black); box-shadow: 3px 3px 0px var(--black); }
-    .fx-spin { background: #FF6B6B; color: var(--white); box-shadow: 3px 3px 0px var(--black); }
-    @keyframes fxPopIn {
-      0% { transform: scale(0); }
-      60% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
     /* Hide UI on mobile during game */
     @media (max-width: 768px) {
       .ui-layer { display: none !important; }
@@ -503,21 +467,10 @@
 
   <div class="flash" id="flash"></div>
 
-  <!-- Effect indicators -->
-  <div class="fx-bar">
-    <div class="fx-pill fx-shake" id="fxShake">Empujón!</div>
-    <div class="fx-pill fx-slow" id="fxSlow">Lento</div>
-    <div class="fx-pill fx-wind" id="fxWind">Viento</div>
-    <div class="fx-pill fx-freeze" id="fxFreeze">Congelado</div>
-    <div class="fx-pill fx-spin" id="fxSpin">Giro</div>
-  </div>
-
   <!-- ===== SPLASH SCREEN ===== -->
   <div class="screen active" id="splash">
     <div class="title-block">
-      <div class="title-cumple">CUMPLE</div>
-      <br>
-      <div class="title-pop">POP</div>
+      <img src="assets/cumplepop.png" alt="CumplePop" style="max-width: 80vw; max-height: 30vh; object-fit: contain;">
     </div>
 
     <div class="torn-paper">
@@ -587,19 +540,31 @@
 
   // Physics state
   const physics = {
+    // Rotation (visual tilt via spring-damper)
     targetTiltX: 0,
     targetTiltZ: 0,
     currentTiltX: 0,
     currentTiltZ: 0,
+    velX: 0,
+    velZ: 0,
+    spring: 0.04,
+    damping: 0.92,
+    // Position (bounce physics)
+    posX: 0,
+    posY: 0,
+    velPX: 0,
+    velPY: 0,
+    friction: 0.965,
+    accelScale: 3.5,
+    // Bounce
+    bounceEnergy: 0.55,
+    boundX: 2.2,
+    boundY: 1.6,
+    // Float
     floatPhase: 0,
     floatSpeed: 1.2,
     floatAmp: 0.15,
     baseY: 0,
-    velX: 0,
-    velZ: 0,
-    damping: 0.92,
-    spring: 0.04,
-    maxTilt: 0.6
   };
 
   // ======== DOM ========
@@ -685,109 +650,15 @@
   let gyroPermissionGranted = false;
   let gyroEnabled = false;
 
-  // Low-pass filter state
   const gyroSmooth = { alpha: 0, beta: 45, gamma: 0 };
-  const gyroRaw = { alpha: 0, beta: 45, gamma: 0 };
   const GYRO_FILTER = 0.3;
   const GYRO_DEADZONE = 3;
 
   function filterGyro(a, b, g) {
-    gyroRaw.alpha = a; gyroRaw.beta = b; gyroRaw.gamma = g;
     gyroSmooth.alpha += GYRO_FILTER * (a - gyroSmooth.alpha);
     gyroSmooth.beta += GYRO_FILTER * (b - gyroSmooth.beta);
     gyroSmooth.gamma += GYRO_FILTER * (g - gyroSmooth.gamma);
     if (Math.abs(gyroSmooth.gamma) < GYRO_DEADZONE) gyroSmooth.gamma = 0;
-  }
-
-  // --- 1. SHAKE ---
-  const shake = { buf: [], lastFire: 0, pushForce: 0 };
-  function detectShake(g) {
-    const now = performance.now();
-    shake.buf.push({ v: g, t: now });
-    if (shake.buf.length > 12) shake.buf.shift();
-    if (now - shake.lastFire < 900) return;
-    const recent = shake.buf.filter(e => now - e.t < 400);
-    if (recent.length < 5) return;
-    let swings = 0;
-    for (let i = 1; i < recent.length; i++) {
-      if (Math.abs(recent[i].v - recent[i-1].v) > 22) swings++;
-    }
-    if (swings >= 3) {
-      shake.pushForce = 2.0;
-      shake.lastFire = now;
-      shake.buf = [];
-      triggerHapticBurst();
-      audioTick(0.7);
-    }
-  }
-
-  // --- 2. EXTREME TILT ---
-  const extremeTilt = { active: false, multiplier: 1, lastSwitch: 0 };
-  function detectExtremeTilt(b) {
-    const now = performance.now();
-    if (now - extremeTilt.lastSwitch < 300) return;
-    if (!extremeTilt.active && b > 65) {
-      extremeTilt.active = true;
-      extremeTilt.multiplier = 0.35;
-      extremeTilt.lastSwitch = now;
-    } else if (extremeTilt.active && b < 55) {
-      extremeTilt.active = false;
-      extremeTilt.multiplier = 1;
-      extremeTilt.lastSwitch = now;
-    }
-  }
-
-  // --- 3. ALPHA ROTATION ---
-  const alphaFx = { last: null, delta: 0, intensity: 0 };
-  function detectAlphaRotation(a) {
-    if (alphaFx.last === null) { alphaFx.last = a; return; }
-    let d = a - alphaFx.last;
-    if (d > 180) d -= 360;
-    if (d < -180) d += 360;
-    alphaFx.delta = d;
-    alphaFx.last = a;
-    alphaFx.intensity = Math.abs(d) > 5 ? Math.min(1, Math.abs(d) / 20) : alphaFx.intensity * 0.9;
-  }
-
-  // --- 4. SWAY ---
-  const sway = { buf: [], windForce: 0, lastFire: 0 };
-  function detectSway(g) {
-    const now = performance.now();
-    if (now - sway.lastFire < 1100) return;
-    if (Math.abs(g) < 10) return;
-    sway.buf.push({ v: g, t: now });
-    sway.buf = sway.buf.filter(e => now - e.t < 600);
-    let crosses = 0;
-    for (let i = 1; i < sway.buf.length; i++) {
-      if ((sway.buf[i].v > 0) !== (sway.buf[i-1].v > 0)) crosses++;
-    }
-    if (crosses >= 3) {
-      sway.windForce = g > 0 ? 1.5 : -1.5;
-      sway.lastFire = now;
-      sway.buf = [];
-      audioTick(0.5);
-    }
-  }
-
-  // --- 5. TILT RESCUE ---
-  const rescue = { holding: false, holdStart: 0, lastFire: 0, frozen: false, freezeEnd: 0 };
-  const RESCUE_MIN = 25, RESCUE_MAX = 50, RESCUE_HOLD = 1200, RESCUE_FREEZE = 3000, RESCUE_CD = 15000;
-  function detectRescue(b) {
-    const now = performance.now();
-    if (rescue.frozen && now < rescue.freezeEnd) return;
-    if (rescue.frozen) rescue.frozen = false;
-    if (now - rescue.lastFire < RESCUE_CD) { rescue.holding = false; return; }
-    const inRange = b >= RESCUE_MIN && b <= RESCUE_MAX;
-    if (inRange && !rescue.holding) { rescue.holding = true; rescue.holdStart = now; }
-    else if (!inRange) { rescue.holding = false; }
-    if (rescue.holding && (now - rescue.holdStart) >= RESCUE_HOLD) {
-      rescue.frozen = true;
-      rescue.freezeEnd = now + RESCUE_FREEZE;
-      rescue.lastFire = now;
-      rescue.holding = false;
-      triggerHapticBurst();
-      audioTick(0.9);
-    }
   }
 
   function triggerHapticBurst() {
@@ -814,18 +685,15 @@
       const g = e.gamma || 0, b = e.beta || 0, a = e.alpha || 0;
       filterGyro(a, b, g);
 
-      // Tilt uses raw values (responsive)
+      // Tilt → rotation (visual)
       const normG = Math.max(-1, Math.min(1, g / 30));
       const normB = Math.max(-1, Math.min(1, (b - 45) / 30));
-      physics.targetTiltZ = normG * physics.maxTilt;
-      physics.targetTiltX = normB * physics.maxTilt * 0.5;
+      physics.targetTiltZ = normG * 0.6;
+      physics.targetTiltX = normB * 0.3;
 
-      // Detection uses filtered values (stable)
-      detectShake(gyroSmooth.gamma);
-      detectExtremeTilt(gyroSmooth.beta);
-      detectAlphaRotation(gyroSmooth.alpha);
-      detectSway(gyroSmooth.gamma);
-      detectRescue(gyroSmooth.beta);
+      // Tilt → acceleration (physics bounce)
+      physics.velPX += gyroSmooth.gamma * 0.003 * physics.accelScale;
+      physics.velPY += (gyroSmooth.beta - 45) * 0.002 * physics.accelScale;
     });
   }
 
@@ -1018,8 +886,11 @@
     if (!gameStarted || isExploded || gyroEnabled) return;
     const nx = (e.clientX / window.innerWidth) * 2 - 1;
     const ny = -(e.clientY / window.innerHeight) * 2 + 1;
-    physics.targetTiltZ = nx * physics.maxTilt;
-    physics.targetTiltX = ny * physics.maxTilt * 0.5;
+    physics.targetTiltZ = nx * 0.6;
+    physics.targetTiltX = ny * 0.3;
+    // Mouse position → velocity
+    physics.velPX += nx * 0.04;
+    physics.velPY += ny * 0.03;
   });
 
   // ======== INFLATION ========
@@ -1044,11 +915,7 @@
 
   function updateTimer(dt) {
     if (isExploded) return;
-    // Tilt rescue: freeze timer
-    if (rescue.frozen && performance.now() < rescue.freezeEnd) return;
-    // Extreme tilt: slow inflation
-    const speedMult = extremeTilt.multiplier;
-    timerAccum += dt * speedMult;
+    timerAccum += dt;
     if (timerAccum >= 1.0) {
       timerAccum -= 1.0;
       timeLeft = Math.max(0, timeLeft - 1);
@@ -1116,13 +983,10 @@
     physics.currentTiltZ = 0;
     physics.velX = 0;
     physics.velZ = 0;
-
-    // Reset gyro state
-    shake.pushForce = 0; shake.buf = [];
-    extremeTilt.active = false; extremeTilt.multiplier = 1;
-    alphaFx.intensity = 0; alphaFx.delta = 0; alphaFx.last = null;
-    sway.windForce = 0; sway.buf = [];
-    rescue.holding = false; rescue.frozen = false;
+    physics.posX = 0;
+    physics.posY = 0;
+    physics.velPX = 0;
+    physics.velPY = 0;
 
     showHapticOverlay();
     startAudioLoop();
@@ -1169,14 +1033,9 @@
     fragGroup.visible = false;
     for (const f of fragments) f.mesh.visible = false;
     physics.currentTiltX = physics.currentTiltZ = physics.velX = physics.velZ = 0;
+    physics.posX = physics.posY = physics.velPX = physics.velPY = 0;
     balloon.rotation.set(0, 0, 0);
     balloon.position.set(0, 0, 0);
-    // Reset gyro state
-    shake.pushForce = 0; shake.buf = [];
-    extremeTilt.active = false; extremeTilt.multiplier = 1;
-    alphaFx.intensity = 0; alphaFx.delta = 0; alphaFx.last = null;
-    sway.windForce = 0; sway.buf = [];
-    rescue.holding = false; rescue.frozen = false;
     // Reset balloon emissive
     balloonMat.emissive = new THREE.Color(0x000000);
     balloonMat.emissiveIntensity = 0;
@@ -1187,20 +1046,7 @@
   startBtn.addEventListener('click', startCountdown);
   restartBtn.addEventListener('click', resetGame);
 
-  // ======== EFFECT INDICATORS ========
-  const fxShake = document.getElementById('fxShake');
-  const fxSlow = document.getElementById('fxSlow');
-  const fxWind = document.getElementById('fxWind');
-  const fxFreeze = document.getElementById('fxFreeze');
-  const fxSpin = document.getElementById('fxSpin');
-
-  function updateFxIndicators() {
-    fxShake.classList.toggle('visible', shake.pushForce > 0.1);
-    fxSlow.classList.toggle('visible', extremeTilt.active);
-    fxWind.classList.toggle('visible', Math.abs(sway.windForce) > 0.1);
-    fxFreeze.classList.toggle('visible', rescue.frozen);
-    fxSpin.classList.toggle('visible', alphaFx.intensity > 0.3);
-  }
+  // ======== EFFECT INDICATORS (removed — replaced by physics bounce) ========
 
   // ======== ANIMATION LOOP ========
   function animate() {
@@ -1216,6 +1062,7 @@
       balloon.scale.set(scale, scale, scale);
       balloonMat.color.copy(getBalloonColor());
 
+      // --- Rotation (spring-damper for visual tilt) ---
       physics.velX += (physics.targetTiltX - physics.currentTiltX) * physics.spring;
       physics.velZ += (physics.targetTiltZ - physics.currentTiltZ) * physics.spring;
       physics.velX *= physics.damping;
@@ -1226,66 +1073,50 @@
       balloon.rotation.x = physics.currentTiltX;
       balloon.rotation.z = physics.currentTiltZ;
 
+      // --- Position (bounce physics) ---
+      physics.velPX *= physics.friction;
+      physics.velPY *= physics.friction;
+      physics.posX += physics.velPX;
+      physics.posY += physics.velPY;
+
+      // Float bob
       physics.floatPhase += dt * physics.floatSpeed;
-      let balloonY = physics.baseY + Math.sin(physics.floatPhase) * physics.floatAmp;
-      let balloonX = physics.currentTiltZ * 0.5;
+      const floatY = Math.sin(physics.floatPhase) * physics.floatAmp;
+
+      // Edge bounce
+      if (physics.posX > physics.boundX) {
+        physics.posX = physics.boundX;
+        physics.velPX *= -physics.bounceEnergy;
+      } else if (physics.posX < -physics.boundX) {
+        physics.posX = -physics.boundX;
+        physics.velPX *= -physics.bounceEnergy;
+      }
+      if (physics.posY > physics.boundY) {
+        physics.posY = physics.boundY;
+        physics.velPY *= -physics.bounceEnergy;
+      } else if (physics.posY < -physics.boundY) {
+        physics.posY = -physics.boundY;
+        physics.velPY *= -physics.bounceEnergy;
+      }
+
+      balloon.position.x = physics.posX;
+      balloon.position.y = physics.baseY + floatY + physics.posY;
       balloon.position.z = -physics.currentTiltX * 0.3;
 
-      // SHAKE → push balloon up
-      if (shake.pushForce > 0) {
-        balloonY += shake.pushForce * 0.5;
-        shake.pushForce *= 0.92;
-        if (shake.pushForce < 0.05) shake.pushForce = 0;
-      }
-
-      // SWAY → wind effect (lateral push)
-      if (sway.windForce !== 0) {
-        balloonX += sway.windForce * 0.3;
-        sway.windForce *= 0.95;
-        if (Math.abs(sway.windForce) < 0.05) sway.windForce = 0;
-      }
-
-      balloon.position.y = balloonY;
-      balloon.position.x = balloonX;
-
-      // ALPHA → visual rotation boost
-      if (alphaFx.intensity > 0.1) {
-        balloon.rotation.y += alphaFx.delta * 0.003;
-        balloonMat.emissive = balloonMat.emissive || new THREE.Color();
-        balloonMat.emissiveIntensity = alphaFx.intensity * 0.3;
-        balloonMat.emissive.set(0xFF1493);
-      } else {
-        if (balloonMat.emissiveIntensity > 0) balloonMat.emissiveIntensity *= 0.9;
-      }
-
-      // EXTREME TILT → visual feedback (slight red tint pulse)
-      if (extremeTilt.active) {
-        const pulse = Math.sin(performance.now() * 0.005) * 0.1;
-        balloonMat.emissive.set(0xFFD700);
-        balloonMat.emissiveIntensity = 0.15 + pulse;
-      }
-
-      // RESCUE → visual feedback (sparkle effect via emissive)
-      if (rescue.frozen) {
-        const sparkle = Math.sin(performance.now() * 0.01) * 0.2 + 0.2;
-        balloonMat.emissive.set(0x00FF88);
-        balloonMat.emissiveIntensity = sparkle;
-      }
-
+      // --- Squash-stretch ---
       const stretch = 1 + (scale - 0.4) * 0.03;
       const squash = 1 - (scale - 0.4) * 0.02;
       balloon.scale.y *= stretch;
       balloon.scale.x *= squash;
       balloon.scale.z *= squash;
 
+      // --- Wobble near explosion ---
       const progress = 1 - (timeLeft / totalTime);
       if (progress > 0.75) {
         const wobble = (progress - 0.75) / 0.25;
         balloon.rotation.x += Math.sin(now * 0.02) * wobble * 0.08;
         balloon.rotation.z += Math.cos(now * 0.015) * wobble * 0.08;
       }
-
-      updateFxIndicators();
     }
 
     updateFragments(dt);
