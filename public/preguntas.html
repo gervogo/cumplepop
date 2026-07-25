@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CumplePop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <style>
       :root {
         --cream: #FDF8F5;
@@ -17,6 +20,7 @@
         height: 100%;
         background: var(--cream);
         overflow: hidden;
+        font-family: 'Kalam', cursive;
       }
 
       body {
@@ -28,10 +32,68 @@
       .logo {
         width: min(90vw, 90vh);
         height: auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .ghost-question {
+        position: absolute;
+        font-size: clamp(14px, 2.2vw, 22px);
+        color: var(--black);
+        opacity: 0;
+        filter: blur(6px);
+        pointer-events: none;
+        max-width: 300px;
+        text-align: center;
+        line-height: 1.4;
+        z-index: 1;
+        transition: opacity 1.8s ease-in-out;
+      }
+
+      .ghost-question.visible {
+        opacity: 0.12;
       }
     </style>
   </head>
   <body>
     <img src="assets/logo-explotado.png" alt="CumplePop" class="logo">
+
+    <script>
+      let questions = []
+
+      fetch('data/preguntas.json')
+        .then(r => r.json())
+        .then(data => { questions = data })
+
+      function randomPos() {
+        const x = 5 + Math.random() * 80
+        const y = 5 + Math.random() * 85
+        return { x, y }
+      }
+
+      function spawnGhost() {
+        if (!questions.length) return
+        const q = questions[Math.floor(Math.random() * questions.length)]
+        const el = document.createElement('div')
+        el.className = 'ghost-question'
+        el.textContent = q.pregunta
+        const pos = randomPos()
+        el.style.left = pos.x + '%'
+        el.style.top = pos.y + '%'
+        el.style.transform = 'translate(-50%, -50%) rotate(' + (-5 + Math.random() * 10) + 'deg)'
+        document.body.appendChild(el)
+
+        requestAnimationFrame(() => {
+          el.classList.add('visible')
+        })
+
+        setTimeout(() => {
+          el.classList.remove('visible')
+          setTimeout(() => el.remove(), 2000)
+        }, 3000 + Math.random() * 3000)
+      }
+
+      setInterval(spawnGhost, 1200)
+    </script>
   </body>
 </html>
