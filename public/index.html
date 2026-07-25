@@ -178,6 +178,12 @@
 
   <div class="flash" id="flash"></div>
 
+  <!-- Haptic overlay (iOS 26.5+ — user must tap screen for haptic) -->
+  <div id="haptic-overlay" style="position:fixed;inset:0;z-index:25;display:none;">
+    <label for="game-haptic" style="display:block;width:100%;height:100%;"></label>
+    <input type="checkbox" switch id="game-haptic" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;">
+  </div>
+
   <!-- Splash Screen -->
   <div class="screen active" id="splash">
     <h2>🎈 CUMPLE POP</h2>
@@ -236,22 +242,13 @@
   const startBtn = document.getElementById('startBtn');
   const restartBtn = document.getElementById('restartBtn');
 
-  // ======== HAPTICS (iOS switch hack + Vibration API + Audio) ========
-  let hapticInterval = null;
+  // ======== HAPTICS ========
+  // iOS 26.5+: haptic SOLO dispara cuando el usuario toca físicamente un <input switch>.
+  // No hay forma programática. La solución: overlay a pantalla completa durante el juego.
+  const hapticOverlay = document.getElementById('haptic-overlay');
+  const hapticSwitch = document.getElementById('game-haptic');
   const hasVibrate = 'vibrate' in navigator;
-
-  // iOS Safari: hidden <input switch> toggles Taptic Engine
-  const hapticId = 'hap-' + Math.random().toString(36).slice(2, 8);
-  const hapticLabel = document.createElement('label');
-  hapticLabel.setAttribute('for', hapticId);
-  hapticLabel.style.cssText = 'position:fixed;top:-9999px;left:-9999px;pointer-events:none;';
-  const hapticInput = document.createElement('input');
-  hapticInput.type = 'checkbox';
-  hapticInput.setAttribute('switch', '');
-  hapticInput.id = hapticId;
-  hapticInput.style.cssText = 'position:fixed;top:-9999px;left:-9999px;pointer-events:none;';
-  hapticLabel.appendChild(hapticInput);
-  document.body.appendChild(hapticLabel);
+  let hapticInterval = null;
 
   let audioCtx = null;
   function ensureAudioCtx() {
@@ -259,7 +256,7 @@
     if (audioCtx.state === 'suspended') audioCtx.resume();
   }
 
-  function audioClick(vol) {
+  function audioTick(vol) {
     try {
       ensureAudioCtx();
       const buf = audioCtx.createBuffer(1, 64, audioCtx.sampleRate);
@@ -270,7 +267,7 @@
       const filter = audioCtx.createBiquadFilter();
       filter.type = 'lowpass';
       filter.frequency.value = 2000 + vol * 2000;
-      gain.gain.value = 0.4 * vol;
+      gain.gain.value = 0.35 * vol;
       src.buffer = buf;
       src.connect(gain);
       gain.connect(filter);
@@ -279,58 +276,33 @@
     } catch(e) {}
   }
 
-  function hapticTick() {
-    if (hasVibrate) navigator.vibrate(12);
-    try { hapticInput.click(); } catch(e) {}
-    audioClick(0.3);
+  function showHapticOverlay() {
+    hapticOverlay.style.display = 'block';
   }
 
-  function hapticPulse() {
-    if (hasVibrate) navigator.vibrate([25, 10, 20]);
-    try { hapticInput.click(); } catch(e) {}
-    audioClick(0.6);
+  function hideHapticOverlay() {
+    hapticOverlay.style.display = 'none';
   }
 
-  function hapticStrong() {
-    if (hasVibrate) navigator.vibrate([40, 10, 30, 10, 25]);
-    try { hapticInput.click(); } catch(e) {}
-    audioClick(0.8);
-  }
-
-  function playTickHaptic(progress) {
-    if (progress < 0.5) {
-      hapticTick();
-    } else if (progress < 0.8) {
-      hapticPulse();
-    } else {
-      hapticStrong();
-    }
-  }
-
-  function startHapticLoop() {
+  function startAudioLoop() {
     if (hapticInterval) clearInterval(hapticInterval);
     hapticInterval = setInterval(() => {
       if (!gameStarted || isExploded) return;
       const progress = 1 - (timeLeft / totalTime);
-      playTickHaptic(progress);
+      if (progress < 0.5) audioTick(0.3);
+      else if (progress < 0.8) audioTick(0.6);
+      else audioTick(0.9);
     }, 500);
   }
 
-  function stopHapticLoop() {
+  function stopAudioLoop() {
     if (hapticInterval) { clearInterval(hapticInterval); hapticInterval = null; }
   }
 
   function triggerExplosionHaptic() {
-    if (hasVibrate) navigator.vibrate([80, 20, 60, 15, 50, 10, 40]);
-    try {
-      hapticInput.click();
-      setTimeout(() => hapticInput.click(), 80);
-      setTimeout(() => hapticInput.click(), 160);
-      setTimeout(() => hapticInput.click(), 240);
-    } catch(e) {}
-    audioClick(1.0);
-    setTimeout(() => audioClick(0.8), 80);
-    setTimeout(() => audioClick(0.6), 160);
+    audioTick(1.0);
+    setTimeout(() => audioTick(0.8), 80);
+    setTimeout(() => audioTick(0.6), 160);
   }
 
   // ======== GYROSCOPE ========
@@ -634,14 +606,16 @@
     physics.velX = 0;
     physics.velZ = 0;
 
-    startHapticLoop();
+    showHapticOverlay();
+    startAudioLoop();
   }
 
   function explodeBalloon() {
     if (isExploded) return;
     isExploded = true;
     gameStarted = false;
-    stopHapticLoop();
+    stopAudioLoop();
+    hideHapticOverlay();
 
     triggerExplosionHaptic();
 
@@ -662,8 +636,8 @@
     isExploded = false;
     gameStarted = false;
     timerAccum = 0;
-    stopHapticLoop();
-    if (hasVibrate) navigator.vibrate(0);
+    stopAudioLoop();
+    hideHapticOverlay();
     balloon.visible = false;
     fragGroup.visible = false;
     for (const f of fragments) f.mesh.visible = false;
