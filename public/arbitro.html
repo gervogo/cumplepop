@@ -231,11 +231,20 @@
         return a
       }
 
+      function weightedOrder(questions) {
+        const weighted = []
+        questions.forEach((q, i) => {
+          const w = q.categoria === 'BookTok y Romantasy' ? 3 : 1
+          for (let j = 0; j < w; j++) weighted.push(i)
+        })
+        return shuffle(weighted)
+      }
+
       fetch('data/preguntas.json')
         .then(r => r.json())
         .then(data => {
           questions = data
-          order = shuffle(data.map((_, i) => i))
+          order = weightedOrder(data)
           renderLocal()
         })
 
@@ -294,7 +303,7 @@
       }
 
       btnShuffle.onclick = () => {
-        order = shuffle(questions.map((_, i) => i))
+        order = weightedOrder(questions)
         currentIndex = 0
         revealAnswer = false
         renderLocal()
