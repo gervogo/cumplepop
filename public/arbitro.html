@@ -45,24 +45,13 @@
         margin-top: 4px;
       }
 
-      .status-bar {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin-bottom: 20px;
+      .counter {
+        text-align: center;
         font-family: 'Fredoka', sans-serif;
         font-size: 0.9rem;
+        opacity: 0.4;
+        margin-bottom: 16px;
       }
-
-      .status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #ccc;
-        border: 2px solid var(--black);
-      }
-      .status-dot.connected { background: #4CAF50; }
 
       .controls {
         display: flex;
@@ -149,30 +138,6 @@
         opacity: 0.5;
       }
 
-      .category-select {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-      }
-
-      .cat-btn {
-        font-family: 'Fredoka', sans-serif;
-        font-size: 0.8rem;
-        border: 2px solid var(--black);
-        background: var(--white);
-        padding: 0.3em 0.8em;
-        border-radius: 999px;
-        cursor: pointer;
-        transition: background 0.15s;
-      }
-      .cat-btn.active {
-        background: var(--lila);
-        color: var(--black);
-      }
-      .cat-btn:hover { background: #f0e8f0; }
-
       .keyboard-hint {
         text-align: center;
         font-family: 'Fredoka', sans-serif;
@@ -185,21 +150,17 @@
   <body>
     <div class="header">
       <h1>Modo Árbitro</h1>
-      <div class="subtitle">Controla lo que se muestra en la TV</div>
+      <div class="subtitle">Lee las preguntas y revela las respuestas</div>
     </div>
 
-    <div class="status-bar">
-      <div class="status-dot" id="statusDot"></div>
-      <span id="statusText">Desconectado</span>
-      <span style="margin-left:12px; opacity:0.4" id="questionCounter"></span>
-    </div>
+    <div class="counter" id="questionCounter"></div>
 
     <div class="controls">
       <button class="btn" id="btnPrev" disabled>← Anterior</button>
       <button class="btn btn-primary" id="btnNext">Siguiente →</button>
       <button class="btn btn-reveal" id="btnReveal">Revelar respuesta</button>
       <button class="btn" id="btnHide" style="display:none">Ocultar respuesta</button>
-      <button class="btn" id="btnShuffle" style="background:var(--lila)">🔀 Barajar</button>
+      <button class="btn" id="btnShuffle" style="background:var(--lila)">Barajar</button>
     </div>
 
     <div class="question-card" id="questionCard">
@@ -222,8 +183,6 @@
       const btnReveal = document.getElementById('btnReveal')
       const btnHide = document.getElementById('btnHide')
       const btnShuffle = document.getElementById('btnShuffle')
-      const statusDot = document.getElementById('statusDot')
-      const statusText = document.getElementById('statusText')
       const questionCounter = document.getElementById('questionCounter')
       const qCategory = document.getElementById('qCategory')
       const qText = document.getElementById('qText')
@@ -235,48 +194,23 @@
       let currentIndex = 0
       let revealAnswer = false
       let order = []
-      let ws = null
 
-      fetch('/data/preguntas.json')
+      function shuffle(arr) {
+        const a = [...arr]
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[a[i], a[j]] = [a[j], a[i]]
+        }
+        return a
+      }
+
+      fetch('data/preguntas.json')
         .then(r => r.json())
         .then(data => {
           questions = data
-          connectWS()
-        })
-
-      function connectWS() {
-        const proto = location.protocol === 'https:' ? 'wss' : 'ws'
-        ws = new WebSocket(`${proto}://${location.host}`)
-
-        ws.onopen = () => {
-          statusDot.classList.add('connected')
-          statusText.textContent = 'Conectado'
-        }
-
-        ws.onclose = () => {
-          statusDot.classList.remove('connected')
-          statusText.textContent = 'Desconectado'
-          setTimeout(connectWS, 2000)
-        }
-
-        ws.onmessage = (e) => {
-          const state = JSON.parse(e.data)
-          currentIndex = state.questionIndex || 0
-          revealAnswer = state.revealAnswer || false
-          order = state.order || questions.map((_, i) => i)
+          order = shuffle(data.map((_, i) => i))
           renderLocal()
-        }
-      }
-
-      function sendState() {
-        if (ws && ws.readyState === 1) {
-          ws.send(JSON.stringify({
-            type: 'question',
-            questionIndex: currentIndex,
-            revealAnswer,
-          }))
-        }
-      }
+        })
 
       function renderLocal() {
         if (!order.length) return
@@ -311,7 +245,6 @@
           currentIndex--
           revealAnswer = false
           renderLocal()
-          sendState()
         }
       }
 
@@ -320,26 +253,24 @@
           currentIndex++
           revealAnswer = false
           renderLocal()
-          sendState()
         }
       }
 
       btnReveal.onclick = () => {
         revealAnswer = true
         renderLocal()
-        sendState()
       }
 
       btnHide.onclick = () => {
         revealAnswer = false
         renderLocal()
-        sendState()
       }
 
       btnShuffle.onclick = () => {
-        if (ws && ws.readyState === 1) {
-          ws.send(JSON.stringify({ action: 'shuffle' }))
-        }
+        order = shuffle(questions.map((_, i) => i))
+        currentIndex = 0
+        revealAnswer = false
+        renderLocal()
       }
 
       document.addEventListener('keydown', (e) => {

@@ -327,7 +327,8 @@
       margin-bottom: 16px;
     }
     .result-emoji {
-      font-size: 5rem;
+      width: clamp(180px, 40vw, 360px);
+      height: auto;
       animation: resultBounce 0.8s cubic-bezier(0.22, 1, 0.36, 1);
     }
     @keyframes resultBounce {
@@ -488,7 +489,7 @@
   <!-- ===== RESULT SCREEN ===== -->
   <div class="screen" id="result">
     <div class="result-explosion">
-      <div class="result-emoji">💥</div>
+      <img class="result-emoji" src="assets/logo-explotado.png" alt="CumplePop explotado">
       <div class="result-rings">
         <div class="result-ring"></div>
         <div class="result-ring"></div>

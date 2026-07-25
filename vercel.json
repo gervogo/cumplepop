@@ -1,0 +1,10 @@
+{
+  "buildCommand": null,
+  "outputDirectory": "public",
+  "routes": [
+    { "src": "/preguntas", "dest": "/preguntas.html" },
+    { "src": "/arbitro", "dest": "/arbitro.html" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
