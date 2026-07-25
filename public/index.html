@@ -52,7 +52,7 @@
     .wt3 { bottom: -6px; left: 15%; width: 110px; transform: rotate(4deg); background: repeating-linear-gradient(90deg, #DDA0DD, #DDA0DD 6px, transparent 6px, transparent 12px); }
     .wt4 { bottom: -4px; right: 12%; width: 95px; transform: rotate(-5deg); background: repeating-linear-gradient(90deg, #98FB98, #98FB98 6px, transparent 6px, transparent 12px); }
 
-    /* Screens */
+    /* ===== SCREENS ===== */
     .screen {
       position: absolute;
       inset: 0;
@@ -64,95 +64,294 @@
       pointer-events: auto;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.4s, visibility 0.4s;
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
     }
     .screen.active {
       opacity: 1;
       visibility: visible;
     }
 
-    /* Splash screen */
+    /* ===== SPLASH ===== */
     #splash {
-      background: rgba(255,240,245,0.92);
+      background: linear-gradient(165deg, #FFF0F5 0%, #FCE4EC 30%, #F3E5F5 65%, #FFF8E1 100%);
+      padding: 40px 24px;
+      gap: 0;
     }
-    #splash h2 {
-      font-size: 3rem;
-      color: #E91E63;
-      margin-bottom: 12px;
-      text-shadow: 2px 2px 0 #F8BBD0;
-    }
-    #splash p {
-      font-size: 1.1rem;
-      color: #666;
-      max-width: 320px;
-      line-height: 1.5;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .btn-action {
-      background: linear-gradient(135deg, #FF69B4, #E91E63);
-      color: #FFF;
-      border: none;
-      border-radius: 14px;
-      padding: 14px 32px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      font-family: 'UnicornPop', inherit;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(233,30,99,0.35);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .btn-action:active { transform: scale(0.95); }
-
-    /* Countdown overlay */
-    #countdown {
-      background: rgba(255,240,245,0.85);
+    #splash::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -80px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,105,180,0.15) 0%, transparent 70%);
       pointer-events: none;
     }
-    #countdown .count-num {
-      font-size: 8rem;
-      font-weight: 900;
-      color: #E91E63;
-      text-shadow: 4px 4px 0 #F8BBD0;
-      animation: countPulse 0.5s ease-out;
-    }
-    @keyframes countPulse {
-      0% { transform: scale(1.5); opacity: 0; }
-      50% { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
+    #splash::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: -60px;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(233,30,99,0.1) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    /* Result screen */
-    #result {
-      background: rgba(255,240,245,0.92);
+    .splash-balloon-icon {
+      font-size: 5rem;
+      margin-bottom: 8px;
+      animation: balloonFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 8px 24px rgba(233,30,99,0.2));
     }
+    @keyframes balloonFloat {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+    }
+
+    #splash h2 {
+      font-size: clamp(2.6rem, 8vw, 3.8rem);
+      color: #E91E63;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+      text-shadow: 3px 3px 0 rgba(248,187,208,0.6);
+      line-height: 1.1;
+    }
+    .splash-subtitle {
+      font-size: 1rem;
+      color: #AD1457;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      opacity: 0.7;
+    }
+    .splash-instructions {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 20px;
+      padding: 20px 24px;
+      max-width: 320px;
+      width: 100%;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+    .splash-instructions p {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.65;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .splash-instructions p:last-child { margin-bottom: 0; }
+    .instruction-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      margin-top: 1px;
+    }
+    .icon-tilt { background: rgba(233,30,99,0.12); }
+    .icon-timer { background: rgba(255,152,0,0.12); }
+    .icon-boom { background: rgba(244,67,54,0.12); }
+
+    .btn-play {
+      position: relative;
+      background: linear-gradient(135deg, #FF4081 0%, #E91E63 50%, #C2185B 100%);
+      color: #FFF;
+      border: none;
+      border-radius: 60px;
+      padding: 18px 56px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      font-family: 'UnicornPop', inherit;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow:
+        0 4px 20px rgba(233,30,99,0.35),
+        0 0 0 0 rgba(233,30,99,0),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: hidden;
+    }
+    .btn-play::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: left 0.5s;
+    }
+    .btn-play:hover::before { left: 100%; }
+    .btn-play:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 10px rgba(233,30,99,0.3);
+    }
+    .btn-play-text { position: relative; z-index: 1; }
+
+    /* ===== COUNTDOWN ===== */
+    #countdown {
+      background: rgba(30,10,20,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      pointer-events: none;
+    }
+    .count-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .count-ring {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,64,129,0.3);
+      animation: countRingPulse 1s ease-out;
+    }
+    @keyframes countRingPulse {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    #countdown .count-num {
+      font-size: clamp(6rem, 20vw, 10rem);
+      font-weight: 900;
+      color: #FFF;
+      text-shadow: 0 0 60px rgba(255,64,129,0.5), 0 0 120px rgba(255,64,129,0.2);
+      animation: countPop 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      line-height: 1;
+    }
+    @keyframes countPop {
+      0% { transform: scale(2.5) rotate(-8deg); opacity: 0; }
+      60% { transform: scale(0.9) rotate(2deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .count-label {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 16px;
+      font-weight: 600;
+    }
+
+    /* ===== RESULT ===== */
+    #result {
+      background: linear-gradient(165deg, #FFF0F5 0%, #FCE4EC 40%, #F3E5F5 100%);
+      padding: 40px 24px;
+      gap: 0;
+    }
+    .result-explosion {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .result-emoji {
+      font-size: 5.5rem;
+      animation: resultBounce 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: drop-shadow(0 8px 32px rgba(233,30,99,0.25));
+    }
+    @keyframes resultBounce {
+      0% { transform: scale(0) rotate(-20deg); }
+      60% { transform: scale(1.15) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .result-rings {
+      position: absolute;
+      inset: -30px;
+      pointer-events: none;
+    }
+    .result-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(233,30,99,0.15);
+      animation: resultRingExpand 1.2s ease-out forwards;
+    }
+    .result-ring:nth-child(2) { animation-delay: 0.15s; }
+    .result-ring:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes resultRingExpand {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
     #result h2 {
-      font-size: 2.5rem;
+      font-size: clamp(2.2rem, 7vw, 3.2rem);
       color: #E91E63;
       margin-bottom: 8px;
-      text-shadow: 2px 2px 0 #F8BBD0;
+      letter-spacing: -0.5px;
+      text-shadow: 2px 2px 0 rgba(248,187,208,0.5);
+      line-height: 1.1;
     }
-    #result .result-emoji {
-      font-size: 5rem;
-      margin-bottom: 16px;
+    .result-score {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .result-time {
+      font-size: clamp(3rem, 10vw, 4.5rem);
+      font-weight: 900;
+      color: #AD1457;
+      line-height: 1;
+    }
+    .result-unit {
+      font-size: 1.2rem;
+      color: #AD1457;
+      font-weight: 600;
+      opacity: 0.7;
     }
     #result p {
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 24px;
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 32px;
+      letter-spacing: 0.5px;
+    }
+    .btn-replay {
+      position: relative;
+      background: linear-gradient(135deg, #FF4081 0%, #E91E63 50%, #C2185B 100%);
+      color: #FFF;
+      border: none;
+      border-radius: 60px;
+      padding: 16px 48px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      font-family: 'UnicornPop', inherit;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 20px rgba(233,30,99,0.3);
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .btn-replay:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 10px rgba(233,30,99,0.25);
     }
 
     /* Explosion flash */
     .flash {
       position: absolute;
       inset: 0;
-      background: #FFF;
+      background: radial-gradient(circle at center, #FFF 0%, #FFE0EC 50%, transparent 80%);
       opacity: 0;
       pointer-events: none;
       z-index: 50;
-      transition: opacity 0.1s;
+      transition: opacity 0.08s;
     }
-    .flash.bang { opacity: 0.6; }
+    .flash.bang { opacity: 0.8; }
 
     /* Hide UI on mobile during game */
     @media (max-width: 768px) {
@@ -180,22 +379,54 @@
 
   <!-- Splash Screen -->
   <div class="screen active" id="splash">
-    <h2>🎈 CUMPLE POP</h2>
-    <p>Inclina el celular para mover el globo. ¡No dejes que explote!</p>
-    <button class="btn-action" id="startBtn">JUGAR</button>
+    <div class="splash-balloon-icon">🎈</div>
+    <h2>CUMPLE POP</h2>
+    <div class="splash-subtitle">La Patata Caliente</div>
+    <div class="splash-instructions">
+      <p>
+        <span class="instruction-icon icon-tilt">📱</span>
+        Inclina el celular para mover el globo y mantenerlo en el aire
+      </p>
+      <p>
+        <span class="instruction-icon icon-timer">⏱️</span>
+        El globo crece solo &mdash; ¡cuanto más aguanto, más peligro!
+      </p>
+      <p>
+        <span class="instruction-icon icon-boom">💥</span>
+        Si explota, ¡pierdes! &mdash; El último en tocar gana
+      </p>
+    </div>
+    <button class="btn-play" id="startBtn">
+      <span class="btn-play-text">JUGAR</span>
+    </button>
   </div>
 
   <!-- Countdown Overlay -->
   <div class="screen" id="countdown">
-    <div class="count-num" id="countNum">3</div>
+    <div class="count-container">
+      <div class="count-ring"></div>
+      <div class="count-num" id="countNum">3</div>
+    </div>
+    <div class="count-label">Preparate</div>
   </div>
 
   <!-- Result Screen -->
   <div class="screen" id="result">
-    <div class="result-emoji">💥</div>
+    <div class="result-explosion">
+      <div class="result-emoji">💥</div>
+      <div class="result-rings">
+        <div class="result-ring"></div>
+        <div class="result-ring"></div>
+        <div class="result-ring"></div>
+      </div>
+    </div>
     <h2>¡BOOM!</h2>
+    <div class="result-score">
+      <span class="result-time" id="resultTime">0</span>
+      <span class="result-unit">segundos</span>
+    </div>
     <p id="resultText">El globo explotó</p>
-    <button class="btn-action" id="restartBtn">JUGAR DE NUEVO</button>
+    <button class="btn-replay" id="restartBtn">JUGAR DE NUEVO</button>
   </div>
 </div>
 
@@ -239,6 +470,7 @@
   const countNum = document.getElementById('countNum');
   const resultEl = document.getElementById('result');
   const resultText = document.getElementById('resultText');
+  const resultTime = document.getElementById('resultTime');
   const startBtn = document.getElementById('startBtn');
   const restartBtn = document.getElementById('restartBtn');
 
@@ -574,18 +806,32 @@
     requestGyroPermission();
     let count = 3;
     countNum.textContent = count;
+    const countLabel = document.querySelector('.count-label');
+    countLabel.textContent = 'Preparate';
+
+    function animateCount() {
+      countNum.style.animation = 'none';
+      countNum.offsetHeight;
+      countNum.style.animation = 'countPop 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+
+      const container = document.querySelector('.count-container');
+      const oldRing = container.querySelector('.count-ring');
+      if (oldRing) oldRing.remove();
+      const ring = document.createElement('div');
+      ring.className = 'count-ring';
+      container.appendChild(ring);
+    }
+
+    animateCount();
     const interval = setInterval(() => {
       count--;
       if (count > 0) {
         countNum.textContent = count;
-        countNum.style.animation = 'none';
-        countNum.offsetHeight;
-        countNum.style.animation = 'countPulse 0.5s ease-out';
+        animateCount();
       } else if (count === 0) {
         countNum.textContent = '¡YA!';
-        countNum.style.animation = 'none';
-        countNum.offsetHeight;
-        countNum.style.animation = 'countPulse 0.5s ease-out';
+        countLabel.textContent = '';
+        animateCount();
       } else {
         clearInterval(interval);
         countdownEl.classList.remove('active');
@@ -633,7 +879,16 @@
     explodeFragments(balloon.position.clone());
 
     setTimeout(() => {
-      resultText.textContent = `Aguantó ${totalTime} segundos`;
+      resultTime.textContent = totalTime;
+      resultText.textContent = 'El globo explotó';
+
+      const rings = resultEl.querySelectorAll('.result-ring');
+      rings.forEach(r => {
+        r.style.animation = 'none';
+        r.offsetHeight;
+        r.style.animation = '';
+      });
+
       resultEl.classList.add('active');
     }, 800);
   }
