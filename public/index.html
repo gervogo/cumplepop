@@ -618,6 +618,7 @@
       if (progress < 0.5) audioTick(0.3);
       else if (progress < 0.8) audioTick(0.6);
       else audioTick(0.9);
+      if (hasVibrate) navigator.vibrate(15);
     }, 500);
   }
 
