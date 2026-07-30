@@ -64,9 +64,29 @@
         filter: blur(8px);
         opacity: 0;
       }
+
+      .home-btn {
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        z-index: 10;
+        font-family: 'IBM Plex Serif', serif;
+        font-size: 0.75rem;
+        color: var(--black);
+        opacity: 0.25;
+        cursor: pointer;
+        background: none;
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 20px;
+        padding: 4px 14px;
+        text-decoration: none;
+        transition: opacity 0.3s;
+      }
+      .home-btn:hover { opacity: 0.6; }
     </style>
   </head>
   <body>
+    <a href="/" class="home-btn">🏠 Home</a>
     <img src="assets/logo-explotado.png" alt="CumplePop" class="logo">
 
     <script>

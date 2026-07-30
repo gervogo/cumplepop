@@ -236,9 +236,29 @@
       .filter-link:active {
         opacity: 0.8;
       }
+
+      .home-btn {
+        font-family: 'Kalam', cursive;
+        font-size: 0.8rem;
+        color: var(--black);
+        opacity: 0.3;
+        cursor: pointer;
+        background: none;
+        border: 2px solid rgba(0,0,0,0.15);
+        border-radius: 20px;
+        padding: 4px 14px;
+        text-decoration: none;
+        transition: opacity 0.15s;
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 5;
+      }
+      .home-btn:hover { opacity: 0.7; }
     </style>
   </head>
   <body>
+    <a href="/" class="home-btn">🏠 Home</a>
     <div class="top-area">
       <img class="sticker" src="assets/icons-bg/icon-01.png" style="top:5%;left:5%;transform:rotate(12deg)" alt="">
       <img class="sticker" src="assets/icons-bg/icon-05.png" style="top:5%;right:5%;transform:rotate(-10deg)" alt="">
