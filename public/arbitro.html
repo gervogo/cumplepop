@@ -175,19 +175,86 @@
         opacity: 0.35;
         cursor: not-allowed;
       }
+
+      /* ===== CATEGORY FILTER ===== */
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+        padding: 8px 12px;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      .filter-chip {
+        font-family: 'Fredoka', sans-serif;
+        font-weight: 600;
+        font-size: 0.7rem;
+        padding: 4px 12px;
+        border: 2px solid var(--black);
+        border-radius: 20px;
+        background: var(--white);
+        color: var(--black);
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+        white-space: nowrap;
+      }
+      .filter-chip:active {
+        transform: translate(1px, 1px);
+      }
+      .filter-chip.active {
+        background: var(--fuchsia);
+        color: var(--white);
+        border-color: var(--fuchsia);
+      }
+      .filter-chip .count {
+        opacity: 0.5;
+        margin-left: 4px;
+        font-size: 0.65rem;
+      }
+      .filter-chip.active .count {
+        opacity: 0.8;
+        color: rgba(255,255,255,0.8);
+      }
+      .filter-actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 8px;
+      }
+      .filter-link {
+        font-family: 'Kalam', cursive;
+        font-size: 0.75rem;
+        color: var(--black);
+        opacity: 0.4;
+        cursor: pointer;
+        background: none;
+        border: none;
+        text-decoration: underline;
+        padding: 2px 6px;
+      }
+      .filter-link:active {
+        opacity: 0.8;
+      }
     </style>
   </head>
   <body>
     <div class="top-area">
-      <img class="sticker" src="assets/icons-bg/icon-01.png" style="top:6%;left:5%;transform:rotate(12deg)" alt="">
-      <img class="sticker" src="assets/icons-bg/icon-05.png" style="top:10%;right:8%;transform:rotate(-10deg)" alt="">
-      <img class="sticker" src="assets/icons-bg/icon-09.png" style="bottom:20%;left:4%;transform:rotate(18deg)" alt="">
-      <img class="sticker" src="assets/icons-bg/icon-14.png" style="top:50%;right:4%;transform:rotate(-15deg)" alt="">
-      <img class="sticker" src="assets/icons-bg/icon-20.png" style="bottom:15%;right:6%;transform:rotate(22deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-01.png" style="top:5%;left:5%;transform:rotate(12deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-05.png" style="top:5%;right:5%;transform:rotate(-10deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-09.png" style="bottom:35%;left:5%;transform:rotate(18deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-14.png" style="bottom:35%;right:5%;transform:rotate(-15deg)" alt="">
+      <img class="sticker" src="assets/icons-bg/icon-20.png" style="bottom:5%;left:5%;transform:rotate(22deg)" alt="">
 
       <img class="logo" src="assets/logo-explotado.png" alt="CumplePop">
 
       <div class="counter" id="questionCounter"></div>
+
+      <div class="filter-actions">
+        <button class="filter-link" id="filterAllBtn">Seleccionar todas</button>
+        <button class="filter-link" id="filterNoneBtn">Ninguna</button>
+      </div>
+      <div class="filter-bar" id="filterBar"></div>
 
       <div class="question-card" id="questionCard">
         <div class="q-category" id="qCategory"></div>
@@ -226,10 +293,77 @@
       const qType = document.getElementById('qType')
       const qDifficulty = document.getElementById('qDifficulty')
 
+      let allQuestions = []
       let questions = []
       let currentIndex = 0
       let revealAnswer = false
       let order = []
+
+      const STORAGE_KEY = 'cumplepop_categories'
+      let selectedCategories = new Set()
+
+      function loadCategories() {
+        const stored = localStorage.getItem(STORAGE_KEY)
+        if (stored) {
+          try { selectedCategories = new Set(JSON.parse(stored)) }
+          catch(e) { selectedCategories = new Set() }
+        }
+      }
+
+      function saveCategories() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...selectedCategories]))
+      }
+
+      function buildFilterBar() {
+        const bar = document.getElementById('filterBar')
+        const map = {}
+        for (const q of allQuestions) {
+          const c = q.categoria
+          if (!map[c]) map[c] = 0
+          map[c]++
+        }
+        bar.innerHTML = ''
+        for (const [name, count] of Object.entries(map).sort((a, b) => b[1] - a[1])) {
+          const chip = document.createElement('button')
+          chip.className = 'filter-chip' + (selectedCategories.has(name) ? ' active' : '')
+          chip.innerHTML = `${name} <span class="count">${count}</span>`
+          chip.addEventListener('click', () => {
+            if (selectedCategories.has(name)) {
+              selectedCategories.delete(name)
+              chip.classList.remove('active')
+            } else {
+              selectedCategories.add(name)
+              chip.classList.add('active')
+            }
+            saveCategories()
+            applyFilter()
+          })
+          bar.appendChild(chip)
+        }
+      }
+
+      function applyFilter() {
+        const cats = [...selectedCategories]
+        questions = allQuestions.filter(q => cats.includes(q.categoria))
+        order = weightedOrder(questions)
+        currentIndex = 0
+        revealAnswer = false
+        renderLocal()
+      }
+
+      document.getElementById('filterAllBtn').addEventListener('click', () => {
+        for (const q of allQuestions) selectedCategories.add(q.categoria)
+        saveCategories()
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.add('active'))
+        applyFilter()
+      })
+
+      document.getElementById('filterNoneBtn').addEventListener('click', () => {
+        selectedCategories.clear()
+        saveCategories()
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'))
+        applyFilter()
+      })
 
       function shuffle(arr) {
         const a = [...arr]
@@ -252,9 +386,14 @@
       fetch('data/preguntas.json')
         .then(r => r.json())
         .then(data => {
-          questions = data
-          order = weightedOrder(data)
-          renderLocal()
+          allQuestions = data
+          loadCategories()
+          if (selectedCategories.size === 0) {
+            for (const q of allQuestions) selectedCategories.add(q.categoria)
+            saveCategories()
+          }
+          buildFilterBar()
+          applyFilter()
         })
 
       function renderLocal() {
@@ -316,6 +455,7 @@
         currentIndex = 0
         revealAnswer = false
         renderLocal()
+        questionCounter.textContent = `Barajado — ${order.length} preguntas`
       }
 
       document.addEventListener('keydown', (e) => {

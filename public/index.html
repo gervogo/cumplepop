@@ -411,6 +411,161 @@
     }
     .flash.bang { opacity: 0.85; }
 
+    /* ===== SETTINGS / TEMA SELECTOR ===== */
+    #settings {
+      background: rgba(253, 248, 245, 0.95);
+      padding: 24px 20px;
+      justify-content: flex-start;
+      padding-top: clamp(40px, 8vh, 60px);
+      overflow-y: auto;
+    }
+    .settings-title {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 5vw, 1.8rem);
+      color: var(--fuchsia);
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .settings-sub {
+      font-family: 'Kalam', cursive;
+      font-size: 0.85rem;
+      color: var(--black);
+      opacity: 0.5;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .settings-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      background: var(--white);
+      border: 2px solid var(--black);
+      border-radius: 8px;
+      padding: 6px 18px;
+      font-family: 'Kalam', cursive;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--black);
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .btn-action:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+    .categories-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      padding-bottom: 20px;
+    }
+    .category-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--white);
+      border: 3px solid var(--black);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-family: 'Kalam', cursive;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 3vw, 1rem);
+      color: var(--black);
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      text-align: left;
+      box-shadow: 4px 4px 0px var(--black);
+      width: 100%;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .category-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--black);
+    }
+    .category-btn .check {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      border: 2px solid var(--black);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: background 0.15s ease;
+      background: transparent;
+    }
+    .category-btn.active .check {
+      background: var(--fuchsia);
+      border-color: var(--black);
+    }
+    .category-btn.active .check::after {
+      content: '✓';
+      color: var(--white);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .category-btn .count {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.75rem;
+      color: var(--fuchsia);
+      margin-left: auto;
+      opacity: 0.7;
+    }
+    .category-btn.active {
+      background: #FFF0F7;
+      box-shadow: 4px 4px 0px var(--fuchsia);
+    }
+    .btn-play {
+      background: var(--fuchsia);
+      color: var(--white);
+      border: 3px solid var(--black);
+      border-radius: 12px;
+      padding: 14px 48px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      margin: 6px auto 0;
+      display: block;
+      max-width: 280px;
+      width: 100%;
+    }
+    .btn-play:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .btn-play:active {
+      transform: translate(4px, 4px);
+      box-shadow: 2px 2px 0px var(--black);
+    }
+    .settings-footer {
+      text-align: center;
+      margin-top: 12px;
+    }
+    .settings-footer .btn-back {
+      background: transparent;
+      border: none;
+      font-family: 'Kalam', cursive;
+      font-size: 0.85rem;
+      color: var(--black);
+      opacity: 0.5;
+      cursor: pointer;
+      padding: 8px;
+      text-decoration: underline;
+    }
+
     /* Hide UI on mobile during game */
     @media (max-width: 768px) {
       .ui-layer { display: none !important; }
@@ -458,6 +613,21 @@
     </div>
 
     <button class="btn-jugar" id="startBtn">JUGAR</button>
+  </div>
+
+  <!-- ===== SETTINGS / TEMA SELECTOR ===== -->
+  <div class="screen" id="settings">
+    <div class="settings-title">Elige temas</div>
+    <div class="settings-sub">Selecciona las categorías de preguntas</div>
+    <div class="settings-actions">
+      <button class="btn-action" id="selectAllBtn">Seleccionar todos</button>
+      <button class="btn-action" id="deselectAllBtn">Deseleccionar todos</button>
+    </div>
+    <div class="categories-grid" id="categoriesGrid"></div>
+    <button class="btn-play" id="playBtn">¡A JUGAR!</button>
+    <div class="settings-footer">
+      <button class="btn-back" id="backBtn">← Volver</button>
+    </div>
   </div>
 
   <!-- ===== COUNTDOWN ===== -->
@@ -541,6 +711,12 @@
 
   // ======== DOM ========
   const splash = document.getElementById('splash');
+  const settingsEl = document.getElementById('settings');
+  const categoriesGrid = document.getElementById('categoriesGrid');
+  const selectAllBtn = document.getElementById('selectAllBtn');
+  const deselectAllBtn = document.getElementById('deselectAllBtn');
+  const playBtn = document.getElementById('playBtn');
+  const backBtn = document.getElementById('backBtn');
   const countdownEl = document.getElementById('countdown');
   const countNum = document.getElementById('countNum');
   const resultEl = document.getElementById('result');
@@ -549,6 +725,66 @@
   const startBtn = document.getElementById('startBtn');
   const restartBtn = document.getElementById('restartBtn');
   const explosionSfx = document.getElementById('explosionSfx');
+
+  // ======== CATEGORY SELECTION ========
+  const STORAGE_KEY = 'cumplepop_categories';
+  let selectedCategories = new Set();
+
+  function loadCategories() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const arr = JSON.parse(stored);
+        selectedCategories = new Set(arr);
+      } catch(e) {
+        selectedCategories = new Set();
+      }
+    }
+  }
+
+  function saveCategories() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...selectedCategories]));
+  }
+
+  function showCategories(categories) {
+    categoriesGrid.innerHTML = '';
+    for (const { name, count } of categories) {
+      const btn = document.createElement('button');
+      btn.className = 'category-btn' + (selectedCategories.has(name) ? ' active' : '');
+      btn.innerHTML = `<span class="check"></span><span class="name">${name}</span><span class="count">${count}</span>`;
+      btn.addEventListener('click', () => {
+        if (selectedCategories.has(name)) {
+          selectedCategories.delete(name);
+          btn.classList.remove('active');
+        } else {
+          selectedCategories.add(name);
+          btn.classList.add('active');
+        }
+        saveCategories();
+        updatePlayBtn();
+      });
+      categoriesGrid.appendChild(btn);
+    }
+    updatePlayBtn();
+  }
+
+  function updatePlayBtn() {
+    playBtn.disabled = selectedCategories.size === 0;
+  }
+
+  function selectAll(categories) {
+    for (const { name } of categories) selectedCategories.add(name);
+    saveCategories();
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.add('active'));
+    updatePlayBtn();
+  }
+
+  function deselectAll() {
+    selectedCategories.clear();
+    saveCategories();
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+    updatePlayBtn();
+  }
 
   // ======== HAPTICS ========
   // iOS 26.5+: haptic SOLO dispara cuando el usuario toca físicamente un <input switch>.
@@ -1025,11 +1261,58 @@
     balloon.rotation.set(0, 0, -0.05);
     balloon.position.set(0, -0.2, 0);
     resultEl.classList.remove('active');
-    splash.classList.add('active');
+    setTimeout(() => openSettings(), 100);
   }
 
-  startBtn.addEventListener('click', startCountdown);
+  function getFilteredQuestions() {
+    if (!window.__allQuestions) return [];
+    const cats = [...selectedCategories];
+    return window.__allQuestions.filter(q => cats.includes(q.categoria));
+  }
+
+  startBtn.addEventListener('click', openSettings);
   restartBtn.addEventListener('click', resetGame);
+
+  playBtn.addEventListener('click', () => {
+    settingsEl.classList.remove('active');
+    startCountdown();
+  });
+
+  backBtn.addEventListener('click', () => {
+    settingsEl.classList.remove('active');
+    splash.classList.add('active');
+  });
+
+  selectAllBtn.addEventListener('click', () => {
+    if (window.__categories) selectAll(window.__categories);
+  });
+
+  deselectAllBtn.addEventListener('click', deselectAll);
+
+  function openSettings() {
+    splash.classList.remove('active');
+    settingsEl.classList.add('active');
+    if (!window.__categories) {
+      fetch('data/preguntas.json')
+        .then(r => r.json())
+        .then(data => {
+          const map = {};
+          for (const q of data) {
+            const c = q.categoria;
+            if (!map[c]) map[c] = 0;
+            map[c]++;
+          }
+          const cats = Object.entries(map).map(([name, count]) => ({ name, count }));
+          window.__categories = cats;
+          window.__allQuestions = data;
+          loadCategories();
+          showCategories(cats);
+        });
+    } else {
+      loadCategories();
+      showCategories(window.__categories);
+    }
+  }
 
   // ======== EFFECT INDICATORS (removed — replaced by physics bounce) ========
 
