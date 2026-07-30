@@ -156,7 +156,6 @@
       transform: rotate(-3deg);
     }
     .balloon-body::before {
-      /* White sticker outline */
       content: '';
       position: absolute;
       inset: -8px;
@@ -229,28 +228,41 @@
       line-height: 1.3;
     }
 
-    /* JUGAR button */
-    .btn-jugar {
+    /* Mode buttons */
+    .mode-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
       position: relative;
       z-index: 10;
+    }
+    .btn-mode {
       background: var(--fuchsia);
       color: var(--white);
       border: 3px solid var(--black);
       box-shadow: 6px 6px 0px var(--black);
       border-radius: 12px;
-      padding: 18px 56px;
+      padding: 16px 48px;
       font-family: 'Fredoka', sans-serif;
       font-weight: 700;
-      font-size: clamp(1.4rem, 5vw, 1.8rem);
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
       letter-spacing: 2px;
       cursor: pointer;
-      transform: rotate(-1deg);
       transition: transform 0.1s ease, box-shadow 0.1s ease;
-      margin-top: 8px;
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+      text-decoration: none;
     }
-    .btn-jugar:active {
-      transform: translate(4px, 4px) rotate(-1deg);
+    .btn-mode:active {
+      transform: translate(4px, 4px);
       box-shadow: 2px 2px 0px var(--black);
+    }
+    .btn-mode-secondary {
+      background: var(--lila);
+      color: var(--white);
     }
 
     /* ===== COUNTDOWN ===== */
@@ -411,161 +423,6 @@
     }
     .flash.bang { opacity: 0.85; }
 
-    /* ===== SETTINGS / TEMA SELECTOR ===== */
-    #settings {
-      background: rgba(253, 248, 245, 0.95);
-      padding: 24px 20px;
-      justify-content: flex-start;
-      padding-top: clamp(40px, 8vh, 60px);
-      overflow-y: auto;
-    }
-    .settings-title {
-      font-family: 'Fredoka', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.4rem, 5vw, 1.8rem);
-      color: var(--fuchsia);
-      margin-bottom: 4px;
-      text-align: center;
-    }
-    .settings-sub {
-      font-family: 'Kalam', cursive;
-      font-size: 0.85rem;
-      color: var(--black);
-      opacity: 0.5;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .settings-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    .btn-action {
-      background: var(--white);
-      border: 2px solid var(--black);
-      border-radius: 8px;
-      padding: 6px 18px;
-      font-family: 'Kalam', cursive;
-      font-weight: 700;
-      font-size: 0.8rem;
-      color: var(--black);
-      cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-    }
-    .btn-action:active {
-      transform: translate(2px, 2px);
-      box-shadow: none;
-    }
-    .categories-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
-      padding-bottom: 20px;
-    }
-    .category-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--white);
-      border: 3px solid var(--black);
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-family: 'Kalam', cursive;
-      font-weight: 700;
-      font-size: clamp(0.85rem, 3vw, 1rem);
-      color: var(--black);
-      cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
-      text-align: left;
-      box-shadow: 4px 4px 0px var(--black);
-      width: 100%;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .category-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0px var(--black);
-    }
-    .category-btn .check {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-      border: 2px solid var(--black);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      transition: background 0.15s ease;
-      background: transparent;
-    }
-    .category-btn.active .check {
-      background: var(--fuchsia);
-      border-color: var(--black);
-    }
-    .category-btn.active .check::after {
-      content: '✓';
-      color: var(--white);
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .category-btn .count {
-      font-family: 'Fredoka', sans-serif;
-      font-size: 0.75rem;
-      color: var(--fuchsia);
-      margin-left: auto;
-      opacity: 0.7;
-    }
-    .category-btn.active {
-      background: #FFF0F7;
-      box-shadow: 4px 4px 0px var(--fuchsia);
-    }
-    .btn-play {
-      background: var(--fuchsia);
-      color: var(--white);
-      border: 3px solid var(--black);
-      border-radius: 12px;
-      padding: 14px 48px;
-      font-family: 'Fredoka', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.2rem, 4vw, 1.5rem);
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-      margin: 6px auto 0;
-      display: block;
-      max-width: 280px;
-      width: 100%;
-    }
-    .btn-play:disabled {
-      opacity: 0.4;
-      pointer-events: none;
-    }
-    .btn-play:active {
-      transform: translate(4px, 4px);
-      box-shadow: 2px 2px 0px var(--black);
-    }
-    .settings-footer {
-      text-align: center;
-      margin-top: 12px;
-    }
-    .settings-footer .btn-back {
-      background: transparent;
-      border: none;
-      font-family: 'Kalam', cursive;
-      font-size: 0.85rem;
-      color: var(--black);
-      opacity: 0.5;
-      cursor: pointer;
-      padding: 8px;
-      text-decoration: underline;
-    }
-
     /* Hide UI on mobile during game */
     @media (max-width: 768px) {
       .ui-layer { display: none !important; }
@@ -612,21 +469,9 @@
       <img src="assets/cumplepop.png" alt="CumplePop" style="max-width: 70vw; max-height: 22vh; object-fit: contain;">
     </div>
 
-    <button class="btn-jugar" id="startBtn">JUGAR</button>
-  </div>
-
-  <!-- ===== SETTINGS / TEMA SELECTOR ===== -->
-  <div class="screen" id="settings">
-    <div class="settings-title">Elige temas</div>
-    <div class="settings-sub">Selecciona las categorías de preguntas</div>
-    <div class="settings-actions">
-      <button class="btn-action" id="selectAllBtn">Seleccionar todos</button>
-      <button class="btn-action" id="deselectAllBtn">Deseleccionar todos</button>
-    </div>
-    <div class="categories-grid" id="categoriesGrid"></div>
-    <button class="btn-play" id="playBtn">¡A JUGAR!</button>
-    <div class="settings-footer">
-      <button class="btn-back" id="backBtn">← Volver</button>
+    <div class="mode-buttons">
+      <button class="btn-mode" id="startBtn">🎈 JUGAR</button>
+      <a href="/arbitro" class="btn-mode btn-mode-secondary">📋 PREGUNTAS</a>
     </div>
   </div>
 
@@ -682,7 +527,6 @@
 
   // Physics state
   const physics = {
-    // Rotation (visual tilt via spring-damper)
     targetTiltX: 0,
     targetTiltZ: 0,
     currentTiltX: 0,
@@ -691,18 +535,15 @@
     velZ: 0,
     spring: 0.04,
     damping: 0.92,
-    // Position (bounce physics)
     posX: 0,
     posY: 0,
     velPX: 0,
     velPY: 0,
     friction: 0.90,
     accelScale: 0.08,
-    // Bounce
     bounceEnergy: 0.5,
     boundX: 0.7,
     boundY: 1.2,
-    // Float
     floatPhase: 0,
     floatSpeed: 1.2,
     floatAmp: 0.15,
@@ -711,12 +552,6 @@
 
   // ======== DOM ========
   const splash = document.getElementById('splash');
-  const settingsEl = document.getElementById('settings');
-  const categoriesGrid = document.getElementById('categoriesGrid');
-  const selectAllBtn = document.getElementById('selectAllBtn');
-  const deselectAllBtn = document.getElementById('deselectAllBtn');
-  const playBtn = document.getElementById('playBtn');
-  const backBtn = document.getElementById('backBtn');
   const countdownEl = document.getElementById('countdown');
   const countNum = document.getElementById('countNum');
   const resultEl = document.getElementById('result');
@@ -726,69 +561,7 @@
   const restartBtn = document.getElementById('restartBtn');
   const explosionSfx = document.getElementById('explosionSfx');
 
-  // ======== CATEGORY SELECTION ========
-  const STORAGE_KEY = 'cumplepop_categories';
-  let selectedCategories = new Set();
-
-  function loadCategories() {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        const arr = JSON.parse(stored);
-        selectedCategories = new Set(arr);
-      } catch(e) {
-        selectedCategories = new Set();
-      }
-    }
-  }
-
-  function saveCategories() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...selectedCategories]));
-  }
-
-  function showCategories(categories) {
-    categoriesGrid.innerHTML = '';
-    for (const { name, count } of categories) {
-      const btn = document.createElement('button');
-      btn.className = 'category-btn' + (selectedCategories.has(name) ? ' active' : '');
-      btn.innerHTML = `<span class="check"></span><span class="name">${name}</span><span class="count">${count}</span>`;
-      btn.addEventListener('click', () => {
-        if (selectedCategories.has(name)) {
-          selectedCategories.delete(name);
-          btn.classList.remove('active');
-        } else {
-          selectedCategories.add(name);
-          btn.classList.add('active');
-        }
-        saveCategories();
-        updatePlayBtn();
-      });
-      categoriesGrid.appendChild(btn);
-    }
-    updatePlayBtn();
-  }
-
-  function updatePlayBtn() {
-    playBtn.disabled = selectedCategories.size === 0;
-  }
-
-  function selectAll(categories) {
-    for (const { name } of categories) selectedCategories.add(name);
-    saveCategories();
-    document.querySelectorAll('.category-btn').forEach(b => b.classList.add('active'));
-    updatePlayBtn();
-  }
-
-  function deselectAll() {
-    selectedCategories.clear();
-    saveCategories();
-    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-    updatePlayBtn();
-  }
-
   // ======== HAPTICS ========
-  // iOS 26.5+: haptic SOLO dispara cuando el usuario toca físicamente un <input switch>.
-  // No hay forma programática. La solución: overlay a pantalla completa durante el juego.
   const hapticOverlay = document.getElementById('haptic-overlay');
   const hapticSwitch = document.getElementById('game-haptic');
   const hasVibrate = 'vibrate' in navigator;
@@ -896,13 +669,11 @@
       const g = e.gamma || 0, b = e.beta || 0, a = e.alpha || 0;
       filterGyro(a, b, g);
 
-      // Tilt → rotation (visual)
       const normG = Math.max(-1, Math.min(1, g / 30));
       const normB = Math.max(-1, Math.min(1, (b - 45) / 30));
       physics.targetTiltZ = normG * 0.6;
       physics.targetTiltX = normB * 0.3;
 
-      // Tilt → acceleration (physics bounce)
       physics.velPX += gyroSmooth.gamma * 0.003 * physics.accelScale;
       physics.velPY += (gyroSmooth.beta - 45) * 0.002 * physics.accelScale;
     });
@@ -975,7 +746,6 @@
   balloon.receiveShadow = true;
   let splashPhase = 0;
 
-  // Show balloon on splash screen
   balloon.visible = true;
   balloon.scale.set(0.8, 0.8, 0.8);
   balloonMat.color.set(0xFF3366);
@@ -1106,7 +876,6 @@
     const ny = -(e.clientY / window.innerHeight) * 2 + 1;
     physics.targetTiltZ = nx * 0.6;
     physics.targetTiltX = ny * 0.3;
-    // Mouse position → velocity
     physics.velPX += nx * 0.04;
     physics.velPY += ny * 0.03;
   });
@@ -1261,62 +1030,13 @@
     balloon.rotation.set(0, 0, -0.05);
     balloon.position.set(0, -0.2, 0);
     resultEl.classList.remove('active');
-    setTimeout(() => openSettings(), 100);
+    splash.classList.add('active');
   }
 
-  function getFilteredQuestions() {
-    if (!window.__allQuestions) return [];
-    const cats = [...selectedCategories];
-    return window.__allQuestions.filter(q => cats.includes(q.categoria));
-  }
-
-  startBtn.addEventListener('click', openSettings);
+  startBtn.addEventListener('click', startCountdown);
   restartBtn.addEventListener('click', resetGame);
 
-  playBtn.addEventListener('click', () => {
-    settingsEl.classList.remove('active');
-    startCountdown();
-  });
-
-  backBtn.addEventListener('click', () => {
-    settingsEl.classList.remove('active');
-    splash.classList.add('active');
-  });
-
-  selectAllBtn.addEventListener('click', () => {
-    if (window.__categories) selectAll(window.__categories);
-  });
-
-  deselectAllBtn.addEventListener('click', deselectAll);
-
-  function openSettings() {
-    splash.classList.remove('active');
-    settingsEl.classList.add('active');
-    if (!window.__categories) {
-      fetch('data/preguntas.json')
-        .then(r => r.json())
-        .then(data => {
-          const map = {};
-          for (const q of data) {
-            const c = q.categoria;
-            if (!map[c]) map[c] = 0;
-            map[c]++;
-          }
-          const cats = Object.entries(map).map(([name, count]) => ({ name, count }));
-          window.__categories = cats;
-          window.__allQuestions = data;
-          loadCategories();
-          showCategories(cats);
-        });
-    } else {
-      loadCategories();
-      showCategories(window.__categories);
-    }
-  }
-
-  // ======== EFFECT INDICATORS (removed — replaced by physics bounce) ========
-
-  // ======== ANIMATION LOOP ========
+  // ======== SPLASH IDLE FLOAT ========
   function animate() {
     requestAnimationFrame(animate);
     const now = performance.now();
@@ -1330,7 +1050,6 @@
       balloon.scale.set(scale, scale, scale);
       balloonMat.color.copy(getBalloonColor());
 
-      // --- Rotation (spring-damper for visual tilt) ---
       physics.velX += (physics.targetTiltX - physics.currentTiltX) * physics.spring;
       physics.velZ += (physics.targetTiltZ - physics.currentTiltZ) * physics.spring;
       physics.velX *= physics.damping;
@@ -1341,11 +1060,9 @@
       balloon.rotation.x = physics.currentTiltX;
       balloon.rotation.z = physics.currentTiltZ;
 
-      // --- Position (bounce physics) ---
       physics.velPX *= physics.friction;
       physics.velPY *= physics.friction;
 
-      // Centering force when no gyro input
       const gyroInactive = Math.abs(gyroSmooth.gamma) < GYRO_DEADZONE && Math.abs(gyroSmooth.beta - 45) < 8;
       if (gyroInactive) {
         physics.velPX -= physics.posX * 0.012;
@@ -1355,11 +1072,9 @@
       physics.posX += physics.velPX;
       physics.posY += physics.velPY;
 
-      // Float bob
       physics.floatPhase += dt * physics.floatSpeed;
       const floatY = Math.sin(physics.floatPhase) * physics.floatAmp;
 
-      // Edge bounce
       if (physics.posX > physics.boundX) {
         physics.posX = physics.boundX;
         physics.velPX *= -physics.bounceEnergy;
@@ -1379,14 +1094,12 @@
       balloon.position.y = physics.baseY + floatY + physics.posY;
       balloon.position.z = -physics.currentTiltX * 0.3;
 
-      // --- Squash-stretch ---
       const stretch = 1 + (scale - 0.4) * 0.03;
       const squash = 1 - (scale - 0.4) * 0.02;
       balloon.scale.y *= stretch;
       balloon.scale.x *= squash;
       balloon.scale.z *= squash;
 
-      // --- Wobble near explosion ---
       const progress = 1 - (timeLeft / totalTime);
       if (progress > 0.75) {
         const wobble = (progress - 0.75) / 0.25;
@@ -1394,7 +1107,6 @@
         balloon.rotation.z += Math.cos(now * 0.015) * wobble * 0.08;
       }
     } else if (!gameStarted && !isExploded) {
-      // Splash / result idle float
       splashPhase += dt * 1.5;
       balloon.position.y = -0.2 + Math.sin(splashPhase) * 0.12;
       balloon.rotation.z = Math.sin(splashPhase * 0.7) * 0.03;
